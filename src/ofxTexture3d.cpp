@@ -21,10 +21,10 @@ void ofxTexture3d::allocate(int w, int h, int d, int internalGlDataType)
     texData.tex_v = d;
     texData.textureTarget = GL_TEXTURE_3D;
 
-    texData.glTypeInternal = internalGlDataType;
+    texData.glInternalFormat = internalGlDataType;
     // get the glType (format) and pixelType (type) corresponding to the glTypeInteral (internalFormat)
-    texData.glType = ofGetGLFormatFromInternal(texData.glTypeInternal);
-    texData.pixelType = ofGetGlTypeFromInternal(texData.glTypeInternal);
+    texData.glType = ofGetGLFormatFromInternal(texData.glInternalFormat);
+    texData.pixelType = ofGetGlTypeFromInternal(texData.glInternalFormat);
     // attempt to free the previous bound texture, if we can:
     clear();
 
@@ -33,7 +33,7 @@ void ofxTexture3d::allocate(int w, int h, int d, int internalGlDataType)
     glEnable(texData.textureTarget);
     glBindTexture(texData.textureTarget, (GLuint)texData.textureID);
 
-    glTexImage3D(texData.textureTarget, 0, texData.glTypeInternal, (GLint)texData.tex_w, (GLint)texData.tex_h, (GLint)texData.tex_d, 0, texData.glType, texData.pixelType, 0);
+    glTexImage3D(texData.textureTarget, 0, texData.glInternalFormat, (GLint)texData.tex_w, (GLint)texData.tex_h, (GLint)texData.tex_d, 0, texData.glType, texData.pixelType, 0);
 
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -91,7 +91,7 @@ void ofxTexture3d::loadData(void * data, int w, int h, int d, int xOffset, int y
         return;
     }
 
-    ofSetPixelStorei(w, 1, ofGetNumChannelsFromGLFormat(glFormat));
+    ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, w, 1, ofGetNumChannelsFromGLFormat(glFormat));
     glEnable(texData.textureTarget);
     glBindTexture(texData.textureTarget, (GLuint) texData.textureID);
     glTexSubImage3D(texData.textureTarget, 0, xOffset, yOffset, zOffset, w, h, d, texData.glType, texData.pixelType, data);

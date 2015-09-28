@@ -9,7 +9,7 @@ class ofxTextureData3d : public ofTextureData
     ofxTextureData3d() {
 		textureID = 0;
 
-		glTypeInternal = GL_RGB8;
+        glInternalFormat = GL_RGB8;
 		textureTarget = GL_TEXTURE_3D;
 
 		glType = GL_RGB;

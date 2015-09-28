@@ -381,7 +381,7 @@ void ofxVolumetrics::setVolumeTextureFilterMode(GLint filterMode) {
 #else
     GLint target = GL_TEXTURE_3D;
 #endif
-    glTexParameteri(target GL_TEXTURE_MIN_FILTER, filterMode);
+    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, filterMode);
     glTexParameteri(target, GL_TEXTURE_MAG_FILTER, filterMode);
     volumeTexture.unbind();
 
