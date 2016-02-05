@@ -141,12 +141,10 @@ ofxVolumetrics::ofxVolumetrics()
 
     volVbo.setVertexData(volVerts, 24, GL_STATIC_DRAW);
     volVbo.setNormalData(volNormals, 24, GL_STATIC_DRAW);
-    volVbo.setColorData(&volVerts[0].x, 3, 24, GL_STATIC_DRAW);
-    volVbo.setTexCoordData(&volVerts[0].x, 3, 24, GL_STATIC_DRAW);
-    //volVbo.setAttributeData(ofShader::COLOR_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
-    //volVbo.enableColors(); 
-    //volVbo.setAttributeData(ofShader::TEXCOORD_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
-    //volVbo.enableTexCoords();
+    volVbo.setAttributeData(ofShader::COLOR_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
+    volVbo.enableColors();
+    volVbo.setAttributeData(ofShader::TEXCOORD_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
+    volVbo.enableTexCoords();
     volVbo.setIndexData(volIndices, 36, GL_STATIC_DRAW);
 }
 
