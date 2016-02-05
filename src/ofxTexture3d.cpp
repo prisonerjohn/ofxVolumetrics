@@ -66,15 +66,15 @@ void ofxTexture3d::loadData(unsigned short* data, int w, int h, int d, int xOffs
 }
 void ofxTexture3d::loadData(ofPixels & pix, int d, int xOffset, int yOffset, int zOffset)
 {
-    loadData(pix.getPixels(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
+    loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
 }
 void ofxTexture3d::loadData(ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset)
 {
-    loadData(pix.getPixels(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
+    loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
 }
 void ofxTexture3d::loadData(ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset)
 {
-    loadData(pix.getPixels(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
+    loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
 }
 
 void ofxTexture3d::loadData(void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
