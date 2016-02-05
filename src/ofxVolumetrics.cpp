@@ -161,14 +161,14 @@ void ofxVolumetrics::setup(int w, int h, int d, ofVec3f voxelSize, bool usePower
 #ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
     #include "shaders/gles2/vert.glsl"
 #else
-    #include "shaders/gl/vert.glsl"
+    #include "shaders/gl3/vert.glsl"
 #endif
 
     string fragmentShader = 
 #ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
     #include "shaders/gles2/frag.glsl"
 #else
-    #include "shaders/gl/frag.glsl"
+    #include "shaders/gl3/frag.glsl"
 #endif
 
     voxelRatio = voxelSize;
