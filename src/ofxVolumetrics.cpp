@@ -36,6 +36,13 @@ ofxVolumetrics::ofxVolumetrics()
     volVerts[2] = ofVec3f(0.0, 0.0, 1.0);
     volVerts[3] = ofVec3f(1.0, 0.0, 1.0);
 
+    volIndices[0] = 0;
+    volIndices[1] = 1;
+    volIndices[2] = 2;
+
+    volIndices[3] = 2;
+    volIndices[4] = 3;
+    volIndices[5] = 0;
 
     /* Right side */
     volNormals[4] = ofVec3f(1.0, 0.0, 0.0);
@@ -48,6 +55,14 @@ ofxVolumetrics::ofxVolumetrics()
     volVerts[6] = ofVec3f(1.0, 0.0, 0.0);
     volVerts[7] = ofVec3f(1.0, 1.0, 0.0);
 
+    volIndices[6] = 4;
+    volIndices[7] = 5;
+    volIndices[8] = 6;
+
+    volIndices[9] = 6;
+    volIndices[10] = 7;
+    volIndices[11] = 4;
+
     /* Top side */
     volNormals[8] = ofVec3f(0.0, 1.0, 0.0);
     volNormals[9] = ofVec3f(0.0, 1.0, 0.0);
@@ -58,6 +73,14 @@ ofxVolumetrics::ofxVolumetrics()
     volVerts[9] = ofVec3f(1.0, 1.0, 0.0);
     volVerts[10] = ofVec3f(0.0, 1.0, 0.0);
     volVerts[11] = ofVec3f(0.0, 1.0, 1.0);
+
+    volIndices[12] = 8;
+    volIndices[13] = 9;
+    volIndices[14] = 10;
+
+    volIndices[15] = 10;
+    volIndices[16] = 11;
+    volIndices[17] = 8;
 
     /* Left side */
     volNormals[12] = ofVec3f(-1.0, 0.0, 0.0);
@@ -70,6 +93,14 @@ ofxVolumetrics::ofxVolumetrics()
     volVerts[14] = ofVec3f(0.0, 0.0, 0.0);
     volVerts[15] = ofVec3f(0.0, 0.0, 1.0);
 
+    volIndices[18] = 12;
+    volIndices[19] = 13;
+    volIndices[20] = 14;
+
+    volIndices[21] = 14;
+    volIndices[22] = 15;
+    volIndices[23] = 12;
+
     /* Bottom side */
     volNormals[16] = ofVec3f(0.0, -1.0, 0.0);
     volNormals[17] = ofVec3f(0.0, -1.0, 0.0);
@@ -81,6 +112,14 @@ ofxVolumetrics::ofxVolumetrics()
     volVerts[18] = ofVec3f(1.0, 0.0, 1.0);
     volVerts[19] = ofVec3f(0.0, 0.0, 1.0);
 
+    volIndices[24] = 16;
+    volIndices[25] = 17;
+    volIndices[26] = 18;
+
+    volIndices[27] = 18;
+    volIndices[28] = 19;
+    volIndices[29] = 16;
+
     /* Back side */
     volNormals[20] = ofVec3f(0.0, 0.0, -1.0);
     volNormals[21] = ofVec3f(0.0, 0.0, -1.0);
@@ -91,6 +130,24 @@ ofxVolumetrics::ofxVolumetrics()
     volVerts[21] = ofVec3f(0.0, 0.0, 0.0);
     volVerts[22] = ofVec3f(0.0, 1.0, 0.0);
     volVerts[23] = ofVec3f(1.0, 1.0, 0.0);
+
+    volIndices[30] = 20;
+    volIndices[31] = 21;
+    volIndices[32] = 22;
+
+    volIndices[33] = 22;
+    volIndices[34] = 23;
+    volIndices[35] = 20;
+
+    volVbo.setVertexData(volVerts, 24, GL_STATIC_DRAW);
+    volVbo.setNormalData(volNormals, 24, GL_STATIC_DRAW);
+    volVbo.setColorData(&volVerts[0].x, 3, 24, GL_STATIC_DRAW);
+    volVbo.setTexCoordData(&volVerts[0].x, 3, 24, GL_STATIC_DRAW);
+    //volVbo.setAttributeData(ofShader::COLOR_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
+    //volVbo.enableColors(); 
+    //volVbo.setAttributeData(ofShader::TEXCOORD_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
+    //volVbo.enableTexCoords();
+    volVbo.setIndexData(volIndices, 36, GL_STATIC_DRAW);
 }
 
 ofxVolumetrics::~ofxVolumetrics()
@@ -247,15 +304,19 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
 
     ofVec3f cubeSize = ofVec3f(w, h, d);
 
-    GLfloat modl[16], proj[16];
-    glGetFloatv( GL_MODELVIEW_MATRIX, modl);
-    glGetFloatv(GL_PROJECTION_MATRIX, proj);
+    //GLfloat modl[16], proj[16];
+    //glGetFloatv( GL_MODELVIEW_MATRIX, modl);
+    //glGetFloatv(GL_PROJECTION_MATRIX, proj);
     GLint color[4];
     glGetIntegerv(GL_CURRENT_COLOR, color);
 
+    ofMatrix4x4 modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+    ofMatrix4x4 projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
+
     ofVec3f scale,t;
     ofQuaternion a,b;
-    ofMatrix4x4(modl).decompose(t, a, scale, b);
+    //ofMatrix4x4(modl).decompose(t, a, scale, b);
+    modlMat.decompose(t, a, scale, b);
 
     GLint cull_mode;
     glGetIntegerv(GL_FRONT_FACE, &cull_mode);
@@ -267,10 +328,15 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     ofClear(0,0,0,0);
 
     //load matricies from outside the FBO
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(proj);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(modl);
+    ofSetMatrixMode(OF_MATRIX_PROJECTION);
+    ofLoadMatrix(projMat);
+    ofSetMatrixMode(OF_MATRIX_MODELVIEW);
+    ofLoadMatrix(modlMat);
+
+    //glMatrixMode(GL_PROJECTION);
+    //glLoadMatrixf(proj);
+    //glMatrixMode(GL_MODELVIEW);
+    //glLoadMatrixf(modl);
 
     ofTranslate(x-cubeSize.x/2, y-cubeSize.y/2, z-cubeSize.z/2);
     ofScale(cubeSize.x,cubeSize.y,cubeSize.z);
@@ -281,11 +347,12 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     volumeShader.setUniform2f("frame_layout", (float)numFramesX, (float)numFramesY); // how the emulated 3d texture is layed out
     volumeShader.setUniformTexture("volume_tex", volumeTexture, 0); // volume texture reference
 #else
-    glActiveTexture(GL_TEXTURE1);
-    volumeTexture.bind();
-    volumeShader.setUniform1i("volume_tex", 1); // volume texture reference
-    volumeTexture.unbind();
-    glActiveTexture(GL_TEXTURE0);
+    //glActiveTexture(GL_TEXTURE1);
+    //volumeTexture.bind();
+    //volumeShader.setUniform1i("volume_tex", 1); // volume texture reference
+    //volumeTexture.unbind();
+    //glActiveTexture(GL_TEXTURE0);
+    volumeShader.setUniformTexture("volume_tex", volumeTexture.getTextureData().textureTarget, volumeTexture.getTextureData().textureID, 1);
 #endif
 
     volumeShader.setUniform3f("vol_d", (float)volWidth, (float)volHeight, (float)volDepth); //dimensions of the volume
@@ -295,6 +362,8 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     volumeShader.setUniform1f("quality", quality.z); // 0 ... 1
     volumeShader.setUniform1f("density", density); // 0 ... 1
     volumeShader.setUniform1f("threshold", threshold);//(float)mouseX/(float)ofGetWidth());
+
+    //volumeShader.setUniform3f("texcoord3", 0, 0, ofGetFrameNum() % 99);
 
     glFrontFace(cull_mode_fbo);
     glEnable(GL_CULL_FACE);
@@ -318,22 +387,30 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
 
 void ofxVolumetrics::drawRGBCube()
 {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    //volVbo.bind();
 
-    glVertexPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
-    glNormalPointer(GL_FLOAT, sizeof(ofVec3f), volNormals);
-    glColorPointer(3,GL_FLOAT, sizeof(ofVec3f), volVerts);
-    glTexCoordPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_NORMAL_ARRAY);
+    //glEnableClientState(GL_COLOR_ARRAY);
+    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    glDrawArrays(GL_QUADS, 0, 24);
+    //glVertexPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
+    //glNormalPointer(GL_FLOAT, sizeof(ofVec3f), volNormals);
+    //glColorPointer(3,GL_FLOAT, sizeof(ofVec3f), volVerts);
+    //glTexCoordPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
 
-    glDisableClientState(GL_COLOR_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
+    //glDrawArrays(GL_QUADS, 0, 24);
+    //glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, volIndices);
+
+    //volVbo.draw(GL_QUADS, 0, 24);
+    volVbo.drawElements(GL_TRIANGLES, 36);
+
+    //glDisableClientState(GL_COLOR_ARRAY);
+    //glDisableClientState(GL_NORMAL_ARRAY);
+    //glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    //glDisableClientState(GL_VERTEX_ARRAY);    
+
+    //volVbo.unbind();
 }
 
 void ofxVolumetrics::updateRenderDimentions()

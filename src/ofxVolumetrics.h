@@ -68,8 +68,10 @@ private:
     unsigned int numFramesX, numFramesY;
 #endif
     //ofMesh volumeMesh; //unfortunately this only supports 2d texture coordinates at the moment.
+    ofVbo volVbo;
     ofVec3f volVerts[24];
     ofVec3f volNormals[24];
+    ofIndexType volIndices[36];
     ofVec3f voxelRatio;
     bool bIsInitialized;
     int volWidth, volHeight, volDepth;
