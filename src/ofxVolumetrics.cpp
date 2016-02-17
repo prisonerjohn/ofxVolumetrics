@@ -142,9 +142,7 @@ ofxVolumetrics::ofxVolumetrics()
     volVbo.setVertexData(volVerts, 24, GL_STATIC_DRAW);
     volVbo.setNormalData(volNormals, 24, GL_STATIC_DRAW);
     volVbo.setAttributeData(ofShader::COLOR_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
-    volVbo.enableColors();
     volVbo.setAttributeData(ofShader::TEXCOORD_ATTRIBUTE, (float *)volVerts, 3, 24, GL_STATIC_DRAW);
-    volVbo.enableTexCoords();
     volVbo.setIndexData(volIndices, 36, GL_STATIC_DRAW);
 }
 
@@ -155,18 +153,24 @@ ofxVolumetrics::~ofxVolumetrics()
 
 void ofxVolumetrics::setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize)
 {
-    string vertexShader = 
 #ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
+    string vertexShader =
     #include "shaders/gles2/vert.glsl"
-#else
-    #include "shaders/gl3/vert.glsl"
-#endif
-
-    string fragmentShader = 
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
+    string fragmentShader =
     #include "shaders/gles2/frag.glsl"
 #else
+    string vertexShaderFixed =
+    #include "shaders/gl/vert.glsl"
+    string fragmentShaderFixed =
+    #include "shaders/gl/frag.glsl"
+
+    string vertexShaderProgrammable =
+    #include "shaders/gl3/vert.glsl"
+    string fragmentShaderProgrammable =
     #include "shaders/gl3/frag.glsl"
+
+    string vertexShader = ofIsGLProgrammableRenderer()? vertexShaderProgrammable : vertexShaderFixed;
+    string fragmentShader = ofIsGLProgrammableRenderer()? fragmentShaderProgrammable : fragmentShaderFixed;
 #endif
 
     voxelRatio = voxelSize;
