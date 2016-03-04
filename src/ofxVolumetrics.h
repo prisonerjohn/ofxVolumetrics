@@ -31,6 +31,11 @@ public:
     ofxVolumetrics();
     virtual ~ofxVolumetrics();
     void setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize=false);
+#ifndef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
+    void setup(ofxTexture3d *texture, ofVec3f voxelSize);
+#else
+    void setup(ofxTexture2d *texture, ofVec3f voxelSize);
+#endif
     void destroy();
     void updateVolumeData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
     void drawVolume(float x, float y, float z, float size, int zTexOffset);
@@ -52,8 +57,12 @@ public:
     void setDensity(float d);
     void setRenderSettings(float xyQuality, float zQuality, float dens, float thresh);
     void setVolumeTextureFilterMode(GLint filterMode);
+
 protected:
 private:
+    void setupVbo();
+    void setupShader();
+
     void drawRGBCube();
     void updateRenderDimentions();
 
@@ -62,16 +71,15 @@ private:
     GLint gl_max_tex_size;
 #ifndef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
     GLint gl_max_tex_3d_depth;
-    ofxTexture3d volumeTexture;
+    ofxTexture3d *volumeTexture;
 #else
-    ofxTexture2d volumeTexture;
+    ofxTexture2d *volumeTexture;
     unsigned int numFramesX, numFramesY;
 #endif
-    //ofMesh volumeMesh; //unfortunately this only supports 2d texture coordinates at the moment.
+    bool bOwnsTexture;
+
     ofVbo volVbo;
-    ofVec3f volVerts[24];
-    ofVec3f volNormals[24];
-    ofIndexType volIndices[36];
+
     ofVec3f voxelRatio;
     bool bIsInitialized;
     int volWidth, volHeight, volDepth;
