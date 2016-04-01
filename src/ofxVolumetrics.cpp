@@ -1,9 +1,4 @@
-
-
 #include "ofxVolumetrics.h"
-#include "ofMain.h"
-
-#define STRINGIFY(A) #A
 
 //--------------------------------------------------------------
 ofxVolumetrics::ofxVolumetrics()
@@ -18,25 +13,13 @@ ofxVolumetrics::ofxVolumetrics()
     volDepth = 0;
     bIsInitialized = false;
 
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gl_max_tex_size);
-    ofLogNotice() << "ofxVolumetrics: GL_MAX_TEXTURE_SIZE = " << gl_max_tex_size;
-
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-    ofDisableArbTex();
-    ofLogNotice() << "ofxVolumetrics: GL_TEXTURE_3D not supported in this build, using 3D texture emulation.";
-#else
-    glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &gl_max_tex_3d_depth);
-    ofLogNotice() << "ofxVolumetrics: GL_MAX_3D_TEXTURE_SIZE = " << gl_max_tex_3d_depth;
-#endif
-
     setupVbo();
-    setupShader();
 }
 
 //--------------------------------------------------------------
 ofxVolumetrics::~ofxVolumetrics()
 {
-    destroy();
+    clear();
 }
 
 //--------------------------------------------------------------
@@ -167,129 +150,8 @@ void ofxVolumetrics::setupVbo()
     volVbo.setIndexData(volIndices, 36, GL_STATIC_DRAW);
 }
 
-//--------------------------------------------------------------
-void ofxVolumetrics::setupShader()
-{
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-    string vertexShader =
-#include "shaders/gles2/vert.glsl"
-    string fragmentShader =
-#include "shaders/gles2/frag.glsl"
-#else
-    string vertexShaderFixed =
-#include "shaders/gl/vert.glsl"
-    string fragmentShaderFixed =
-#include "shaders/gl/frag.glsl"
 
-    string vertexShaderProgrammable =
-#include "shaders/gl3/vert.glsl"
-    string fragmentShaderProgrammable =
-#include "shaders/gl3/frag.glsl"
-
-    string vertexShader = ofIsGLProgrammableRenderer()? vertexShaderProgrammable : vertexShaderFixed;
-    string fragmentShader = ofIsGLProgrammableRenderer()? fragmentShaderProgrammable : fragmentShaderFixed;
-#endif
-
-    volumeShader.unload();
-    volumeShader.setupShaderFromSource(GL_VERTEX_SHADER, vertexShader);
-    volumeShader.setupShaderFromSource(GL_FRAGMENT_SHADER, fragmentShader);
-    volumeShader.linkProgram();
-}
-
-//--------------------------------------------------------------
-void ofxVolumetrics::setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize)
-{
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-// using emulated 3D textures
-
-    // find out how many frames we can fit in x dimension
-    unsigned int maxNumFramesX = gl_max_tex_size / w;
-    ofLogVerbose() << "ofxVolumetrics: maximum number of frames at " << w << " pixels wide in the X dimension is " << maxNumFramesX;
-
-    // find out how many frames we can fit in y dimension
-    unsigned int maxNumFramesY = gl_max_tex_size / h;
-    ofLogVerbose() << "ofxVolumetrics: maximum number of frames at " << h << " pixels tall in the Y dimension is " << maxNumFramesY;
-
-    unsigned int maxNumFrames = maxNumFramesX * maxNumFramesY;
-    ofLogVerbose() << "ofxVolumetrics: maximum emulated 3D texture size for requested width and height is (" << w << "," << h << "," << maxNumFrames <<")";
-
-    if (d > maxNumFrames) {
-        ofLogError() << "ofxVolumetrics: tried to allocate emulated 3d texture with dimensions (" << w << "," << h << "," << d << "), but maximum frames at " << w << "x" << h << " is " << maxNumFrames;
-        std::exit(1);
-    }
-
-    numFramesX = min(maxNumFramesX, (unsigned int)d);
-    ofLogVerbose() << "ofxVolumetrics: emulated texture will be " << numFramesX << " frames wide";
-
-    numFramesY = d / numFramesX;
-    if (d % numFramesX > 0) {
-        numFramesY++;
-    }
-
-    ofLogVerbose() << "ofxVolumetrics: emulated texture will be " << numFramesY << " frames tall";
-
-    volWidth = renderWidth = w;
-    volHeight = renderHeight = h;
-    volDepth = d;
-    volTexWidth = w * numFramesX;
-    volTexHeight = h * numFramesY;
-    volTexDepth = 1;
-
-    if(bIsPowerOfTwo){
-        volTexWidth = ofNextPow2(volTexWidth);
-        volTexHeight = ofNextPow2(volTexHeight);
-
-        ofLogVerbose() << "ofxVolumetrics::setup(): Using power of two texture size.";
-    }
-    ofLogVerbose() << "ofxVolumetrics: Emulated 3D texutre size: " << volTexWidth << "x" << volTexHeight;
-    volumeTexture.allocate(volTexWidth, volTexHeight, GL_RGBA);
-
-#else 
-    // using real 3D textures
-
-    volTexWidth = volWidth = renderWidth = w;
-    volTexHeight = volHeight = renderHeight = h;
-    volTexDepth = volDepth = d;
-
-    if(bIsPowerOfTwo){
-        volTexWidth = ofNextPow2(volTexWidth);
-        volTexHeight = ofNextPow2(volTexHeight);
-        volTexDepth = ofNextPow2(volTexDepth);
-
-        ofLogVerbose() << "ofxVolumetrics::setup(): Using power of two texture size. Requested: " << w << "x" <<h<<"x"<<d<<". Actual: " << volTexWidth<<"x"<<volTexHeight<<"x"<<volTexDepth;
-    }
-
-    if (bOwnsTexture && volumeTexture) {
-        delete volumeTexture;
-    }
-
-    volumeTexture = new ofxTexture3d();
-    volumeTexture->allocate(w, h, d, GL_RGBA);
-    bOwnsTexture = true;
-
-    if (bIsPowerOfTwo) {
-        // if using cropped power of two, blank out the extra memory
-        unsigned char * d;
-        d = new unsigned char[volTexWidth*volTexHeight*volTexDepth*4];
-        memset(d, 0, volTexWidth*volTexHeight*volTexDepth*4);
-        volumeTexture->loadData(d, volTexWidth, volTexHeight, volTexDepth, 0,0,0, GL_RGBA);
-
-        // free the memory used to blank the texture
-        delete [] d;
-    }
-
-#endif
-
-    voxelRatio = voxelSize;
-    fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
-    bIsInitialized = true;
-}
-
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-void ofxVolumetrics::setup(ofxTexture2d *texture, ofVec3f voxelSize)
-#else
-void ofxVolumetrics::setup(ofxTexture3d *texture, ofVec3f voxelSize)
-#endif
+void ofxVolumetrics::setup(ofxTexture *texture, ofVec3f voxelSize)
 {
     if (bOwnsTexture && volumeTexture) {
         delete volumeTexture;
@@ -298,19 +160,20 @@ void ofxVolumetrics::setup(ofxTexture3d *texture, ofVec3f voxelSize)
     volumeTexture = texture;
     bOwnsTexture = false;
 
-    volTexWidth = volWidth = renderWidth = volumeTexture->getTextureData().width;
-    volTexHeight = volHeight = renderHeight = volumeTexture->getTextureData().height;
-    volTexDepth = volDepth = volumeTexture->getTextureData().depth;
+    volTexWidth = volWidth = renderWidth = volumeTexture->texData.width;
+    volTexHeight = volHeight = renderHeight = volumeTexture->texData.height;
+    volTexDepth = volDepth = volumeTexture->texData.depth;
 
     voxelRatio = voxelSize;
 
     if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight) {
         fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
     }
+
     bIsInitialized = true;
 }
 
-void ofxVolumetrics::destroy()
+void ofxVolumetrics::clear()
 {
     volumeShader.unload();
 //    fboBackground.destroy();
@@ -330,20 +193,18 @@ void ofxVolumetrics::destroy()
 
 void ofxVolumetrics::updateVolumeData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
 {
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-    // upload each sub frame
-    for (int z = zOffset; z < (zOffset + d); z++)
-    {
-        int x = (z % numFramesX) * volWidth + xOffset;
-        int y = (z / numFramesX) * volHeight + yOffset;
-
-        // ofLogVerbose() << "uploading " << w << "x" << h << " pixels to location " << x << "," << y;
-
-        volumeTexture.loadData(data + w * h * z * 4, w, h, x, y, GL_RGBA);
-    }
-#else
     volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_RGBA);
-#endif
+}
+
+void ofxVolumetrics::updateShaderUniforms(int zOffset)
+{
+	volumeShader.setUniform3f("vol_d", (float)volWidth, (float)volHeight, (float)volDepth); //dimensions of the volume
+	volumeShader.setUniform3f("vol_tex_d", (float)volTexWidth, (float)volTexHeight, (float)volTexDepth); //dimensions of the volume texture
+
+	volumeShader.setUniform1f("zoffset", zOffset); // used for animation so that we dont have to upload the entire volume every time
+	volumeShader.setUniform1f("quality", quality.z); // 0 ... 1
+	volumeShader.setUniform1f("density", density); // 0 ... 1
+	volumeShader.setUniform1f("threshold", threshold);//(float)mouseX/(float)ofGetWidth());
 }
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset)
@@ -357,7 +218,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexO
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset)
 {
-    updateRenderDimentions();
+    updateRenderDimensions();
 
     ofVec3f cubeSize = ofVec3f(w, h, d);
 
@@ -398,29 +259,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     ofTranslate(x-cubeSize.x/2, y-cubeSize.y/2, z-cubeSize.z/2);
     ofScale(cubeSize.x,cubeSize.y,cubeSize.z);
 
-    //pass variables to the shader
-
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-    volumeShader.setUniform2f("frame_layout", (float)numFramesX, (float)numFramesY); // how the emulated 3d texture is layed out
-    volumeShader.setUniformTexture("volume_tex", volumeTexture, 0); // volume texture reference
-#else
-    //glActiveTexture(GL_TEXTURE1);
-    //volumeTexture.bind();
-    //volumeShader.setUniform1i("volume_tex", 1); // volume texture reference
-    //volumeTexture.unbind();
-    //glActiveTexture(GL_TEXTURE0);
-    volumeShader.setUniformTexture("volume_tex", volumeTexture->getTextureData().textureTarget, volumeTexture->getTextureData().textureID, 1);
-#endif
-
-    volumeShader.setUniform3f("vol_d", (float)volWidth, (float)volHeight, (float)volDepth); //dimensions of the volume
-    volumeShader.setUniform3f("vol_tex_d", (float)volTexWidth, (float)volTexHeight, (float)volTexDepth); //dimensions of the volume texture
-
-    volumeShader.setUniform1f("zoffset", zTexOffset); // used for animation so that we dont have to upload the entire volume every time
-    volumeShader.setUniform1f("quality", quality.z); // 0 ... 1
-    volumeShader.setUniform1f("density", density); // 0 ... 1
-    volumeShader.setUniform1f("threshold", threshold);//(float)mouseX/(float)ofGetWidth());
-
-    //volumeShader.setUniform3f("texcoord3", 0, 0, ofGetFrameNum() % 99);
+	updateShaderUniforms(zTexOffset);
 
     glFrontFace(cull_mode_fbo);
     glEnable(GL_CULL_FACE);
@@ -470,7 +309,7 @@ void ofxVolumetrics::drawRGBCube()
     //volVbo.unbind();
 }
 
-void ofxVolumetrics::updateRenderDimentions()
+void ofxVolumetrics::updateRenderDimensions()
 {
 //    if((int)(ofGetWidth() * quality.x) != renderWidth)
 //    {
@@ -484,7 +323,7 @@ void ofxVolumetrics::setXyQuality(float q)
 {
     quality.x = MAX(q,0.01);
 
-    updateRenderDimentions();
+	updateRenderDimensions();
 }
 void ofxVolumetrics::setZQuality(float q)
 {
@@ -506,19 +345,14 @@ void ofxVolumetrics::setRenderSettings(float xyQuality, float zQuality, float de
     setThreshold(thresh);
 }
 
-void ofxVolumetrics::setVolumeTextureFilterMode(GLint filterMode) {
-    if(filterMode != GL_NEAREST && filterMode != GL_LINEAR) return;
+void ofxVolumetrics::setVolumeTextureFilterMode(GLint filterMode) 
+{
+    if (filterMode != GL_NEAREST && filterMode != GL_LINEAR) return;
 
     volumeTexture->bind();
-#ifdef OFX_VOLUMETRICS_EMULATE_3D_TEXTURE
-    GLint target = GL_TEXTURE_2D;
-#else
-    GLint target = GL_TEXTURE_3D;
-#endif
-    glTexParameteri(target, GL_TEXTURE_MIN_FILTER, filterMode);
-    glTexParameteri(target, GL_TEXTURE_MAG_FILTER, filterMode);
+    glTexParameteri(volumeTexture->texData.textureTarget, GL_TEXTURE_MIN_FILTER, filterMode);
+    glTexParameteri(volumeTexture->texData.textureTarget, GL_TEXTURE_MAG_FILTER, filterMode);
     volumeTexture->unbind();
-
 }
 
 bool ofxVolumetrics::isInitialized()
