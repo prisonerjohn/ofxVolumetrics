@@ -7,14 +7,26 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ofApp.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxTextureArray.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxVolumetricsArray.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxTexture.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxTexture3d.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxVolumetrics.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ofxVolumetrics3D.cpp">
+      <Filter>addons\ofxVolumetrics\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -35,14 +47,26 @@
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
       <Filter>addons\ofxVolumetrics\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
-      <Filter>addons\ofxVolumetrics\src</Filter>
-    </ClInclude>
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxTextureArray.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxVolumetricsArray.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxTexture.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxTexture3d.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxVolumetrics.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ofxVolumetrics3D.h">
+      <Filter>addons\ofxVolumetrics\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

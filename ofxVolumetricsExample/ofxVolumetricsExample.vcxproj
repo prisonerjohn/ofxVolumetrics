@@ -171,16 +171,24 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\ofxTexture.cpp" />
+    <ClCompile Include="..\src\ofxTexture3d.cpp" />
+    <ClCompile Include="..\src\ofxTextureArray.cpp" />
+    <ClCompile Include="..\src\ofxVolumetrics.cpp" />
+    <ClCompile Include="..\src\ofxVolumetrics3D.cpp" />
+    <ClCompile Include="..\src\ofxVolumetricsArray.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp" />
-    <ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\ofxTexture.h" />
+    <ClInclude Include="..\src\ofxTexture3d.h" />
+    <ClInclude Include="..\src\ofxTextureArray.h" />
+    <ClInclude Include="..\src\ofxVolumetrics.h" />
+    <ClInclude Include="..\src\ofxVolumetrics3D.h" />
+    <ClInclude Include="..\src\ofxVolumetricsArray.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h" />
-    <ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
