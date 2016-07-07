@@ -48,20 +48,23 @@ public:
 	virtual void allocate(int w, int h, int d, int internalGlDataType) = 0;
 	void clear();
 
-	void loadData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
-	void loadData(float* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
-	void loadData(unsigned short* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
-	void loadData(ofPixels & pix, int d, int xOffset, int yOffset, int zOffset);
-	void loadData(ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset);
-	void loadData(ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset);
+	void loadData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const float* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const unsigned short* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const ofPixels & pix, int d, int xOffset, int yOffset, int zOffset);
+	void loadData(const ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset);
+	void loadData(const ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset);
 
 	void bind();
 	void unbind();
 
+	void generateMipmaps();
+	void setMinMagFilters(GLenum min, GLenum mag);
+
 	ofxTextureData texData;
 
 protected:
-	virtual void loadData(void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat) = 0;
+	virtual void loadData(const void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat) = 0;
 
 	void ofRetain();
 	void ofRelease();

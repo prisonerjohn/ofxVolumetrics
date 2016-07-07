@@ -17,10 +17,12 @@ public:
 
 	virtual void setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize = false) = 0;
 	void setup(ofxTexture *texture, ofVec3f voxelSize);
+	void setup(ofxTexture *texture, ofVec3f voxelSize, ofShader shader);
 
 	void clear();
 
-	virtual void updateVolumeData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
+	virtual void updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
+	virtual void updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
 	
 	void drawVolume(float x, float y, float z, float size, int zTexOffset);
 	void drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset);

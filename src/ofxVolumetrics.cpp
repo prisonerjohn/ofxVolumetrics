@@ -171,6 +171,28 @@ void ofxVolumetrics::setup(ofxTexture *texture, ofVec3f voxelSize)
     }
 
     bIsInitialized = true;
+	setupShader();
+}
+
+void ofxVolumetrics::setup(ofxTexture *texture, ofVec3f voxelSize, ofShader shader){
+	if (bOwnsTexture && volumeTexture) {
+		delete volumeTexture;
+	}
+	volumeShader = shader;
+	volumeTexture = texture;
+	bOwnsTexture = false;
+
+	volTexWidth = volWidth = renderWidth = volumeTexture->texData.width;
+	volTexHeight = volHeight = renderHeight = volumeTexture->texData.height;
+	volTexDepth = volDepth = volumeTexture->texData.depth;
+
+	voxelRatio = voxelSize;
+
+	if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight) {
+		fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
+	}
+
+	bIsInitialized = true;
 }
 
 void ofxVolumetrics::clear()
@@ -191,9 +213,13 @@ void ofxVolumetrics::clear()
     bIsInitialized = false;
 }
 
-void ofxVolumetrics::updateVolumeData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
+void ofxVolumetrics::updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
 {
     volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_RGBA);
+}
+
+void ofxVolumetrics::updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset){
+	volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_R32F);
 }
 
 void ofxVolumetrics::updateShaderUniforms(int zOffset)
@@ -225,8 +251,8 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     //GLfloat modl[16], proj[16];
     //glGetFloatv( GL_MODELVIEW_MATRIX, modl);
     //glGetFloatv(GL_PROJECTION_MATRIX, proj);
-    GLint color[4];
-    glGetIntegerv(GL_CURRENT_COLOR, color);
+	/*GLint color[4];
+	glGetIntegerv(GL_CURRENT_COLOR, color);*/
 
     ofMatrix4x4 modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
     ofMatrix4x4 projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
@@ -273,7 +299,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
 
     ofPushView();
 
-    glColor4iv(color);
+	//glColor4iv(color);
     ofSetupScreenOrtho();//ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,false,0,1000);
     fboRender.draw(0,0,ofGetWidth(),ofGetHeight());
 

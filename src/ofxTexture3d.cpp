@@ -60,7 +60,7 @@ void ofxTexture3d::allocate(int w, int h, int d, int internalGlDataType)
 }
 
 //----------------------------------------------------------
-void ofxTexture3d::loadData(void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
+void ofxTexture3d::loadData(const void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
 {
     if (glFormat!=texData.glType)
     {

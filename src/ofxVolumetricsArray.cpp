@@ -64,30 +64,7 @@ void ofxVolumetricsArray::setup(int w, int h, int d, ofVec3f voxelSize, bool use
     voxelRatio = voxelSize;
     fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
     bIsInitialized = true;
-}
-
-//--------------------------------------------------------------
-void ofxVolumetricsArray::setup(ofxTextureArray *texture, ofVec3f voxelSize)
-{
-    if (bOwnsTexture && volumeTexture) 
-	{
-        delete volumeTexture;
-    }
-
-    volumeTexture = texture;
-    bOwnsTexture = false;
-
-    volTexWidth = volWidth = renderWidth = volumeTexture->texData.width;
-    volTexHeight = volHeight = renderHeight = volumeTexture->texData.height;
-    volTexDepth = volDepth = volumeTexture->texData.depth;
-
-    voxelRatio = voxelSize;
-
-    if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight) 
-	{
-        fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
-    }
-    bIsInitialized = true;
+	setupShader();
 }
 
 //--------------------------------------------------------------

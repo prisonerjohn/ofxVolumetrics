@@ -32,37 +32,37 @@ void ofxTexture::clear()
 }
 
 //----------------------------------------------------------
-void ofxTexture::loadData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
+void ofxTexture::loadData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
 {
-	loadData((void *)data, w, h, d, xOffset, yOffset, zOffset, glFormat);
+	loadData((const void*)data, w, h, d, xOffset, yOffset, zOffset, glFormat);
 }
 
 //----------------------------------------------------------
-void ofxTexture::loadData(float* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
+void ofxTexture::loadData(const float* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
 {
-	loadData((void *)data, w, h, d, xOffset, yOffset, zOffset, glFormat);
+	loadData((const void*)data, w, h, d, xOffset, yOffset, zOffset, glFormat);
 }
 
 //----------------------------------------------------------
-void ofxTexture::loadData(unsigned short* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
+void ofxTexture::loadData(const unsigned short* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat)
 {
-	loadData((void *)data, w, h, d, xOffset, yOffset, zOffset, glFormat);
+	loadData((const void*)data, w, h, d, xOffset, yOffset, zOffset, glFormat);
 }
 
 //----------------------------------------------------------
-void ofxTexture::loadData(ofPixels & pix, int d, int xOffset, int yOffset, int zOffset)
-{
-	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
-}
-
-//----------------------------------------------------------
-void ofxTexture::loadData(ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset)
+void ofxTexture::loadData(const ofPixels & pix, int d, int xOffset, int yOffset, int zOffset)
 {
 	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
 }
 
 //----------------------------------------------------------
-void ofxTexture::loadData(ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset)
+void ofxTexture::loadData(const ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset)
+{
+	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
+}
+
+//----------------------------------------------------------
+void ofxTexture::loadData(const ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset)
 {
 	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), d, xOffset, yOffset, zOffset, ofGetGlFormat(pix));
 }
@@ -78,4 +78,21 @@ void ofxTexture::bind()
 void ofxTexture::unbind()
 {
 	glActiveTexture(0);
+}
+
+//----------------------------------------------------------
+void ofxTexture::generateMipmaps(){
+	bind();
+	glGenerateMipmap(texData.textureTarget);
+	unbind();
+}
+
+//----------------------------------------------------------
+void ofxTexture::setMinMagFilters(GLenum min, GLenum mag){
+	texData.magFilter = mag;
+	texData.minFilter = min;
+	bind();
+	glTexParameterf(texData.textureTarget, GL_TEXTURE_MAG_FILTER, texData.magFilter);
+	glTexParameterf(texData.textureTarget, GL_TEXTURE_MIN_FILTER, texData.minFilter);
+	unbind();
 }

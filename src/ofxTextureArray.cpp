@@ -58,7 +58,7 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 }
 
 //----------------------------------------------------------
-void ofxTextureArray::loadData(void * data, int w, int h, int d, int xOffset, int yOffset, int layerOffset, int glFormat)
+void ofxTextureArray::loadData(const void * data, int w, int h, int d, int xOffset, int yOffset, int layerOffset, int glFormat)
 {
 	if (glFormat != texData.glType)
 	{

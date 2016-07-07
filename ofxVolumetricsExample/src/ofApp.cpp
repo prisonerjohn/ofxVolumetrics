@@ -47,12 +47,14 @@ void ofApp::setup()
 
     cam.setDistance(1000);
     cam.enableMouseInput();
+	cam.disableInertia();
+	cam.setUpAxis({0,0,-1});
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    ofSetWindowTitle(ofToString(ofGetFrameRate()));
+	//ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
 
 //--------------------------------------------------------------
@@ -74,7 +76,8 @@ void ofApp::draw()
                        "Z quality (z/Z):   " + ofToString(myVolume.getZQuality()) + "\n" +
                        "Threshold (t/T):   " + ofToString(myVolume.getThreshold()) + "\n" +
                        "Density (d/D):     " + ofToString(myVolume.getDensity()) + "\n" +
-                       "Filter mode (l/n): " + (linearFilter?"linear":"nearest"),20,20);
+	                   "Filter mode (l/n): " + (linearFilter?"linear":"nearest") + "\n" +
+	                   "Fps: " + ofToString(ofGetFrameRate()), 20, 20);
 
 }
 

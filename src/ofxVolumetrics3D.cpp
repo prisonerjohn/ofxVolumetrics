@@ -6,8 +6,6 @@
 ofxVolumetrics3D::ofxVolumetrics3D()
 	: ofxVolumetrics()
 {
-	// Have to call this in subclass.
-	setupShader();
 }
 
 //--------------------------------------------------------------
@@ -54,7 +52,7 @@ void ofxVolumetrics3D::setup(int w, int h, int d, ofVec3f voxelSize, bool usePow
     }
 
     volumeTexture = new ofxTexture3d();
-    volumeTexture->allocate(w, h, d, GL_RGBA);
+	volumeTexture->allocate(w, h, d, GL_RGBA);
     bOwnsTexture = true;
 
     if (bIsPowerOfTwo) 
@@ -63,7 +61,7 @@ void ofxVolumetrics3D::setup(int w, int h, int d, ofVec3f voxelSize, bool usePow
 		unsigned char * d;
         d = new unsigned char[volTexWidth*volTexHeight*volTexDepth*4];
         memset(d, 0, volTexWidth*volTexHeight*volTexDepth*4);
-        volumeTexture->loadData(d, volTexWidth, volTexHeight, volTexDepth, 0,0,0, GL_RGBA);
+		volumeTexture->loadData(d, volTexWidth, volTexHeight, volTexDepth, 0,0,0, GL_RGBA);
 
 		// Free the memory used to blank the texture.
 		delete [] d;
@@ -72,30 +70,7 @@ void ofxVolumetrics3D::setup(int w, int h, int d, ofVec3f voxelSize, bool usePow
     voxelRatio = voxelSize;
     fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
     bIsInitialized = true;
-}
-
-//--------------------------------------------------------------
-void ofxVolumetrics3D::setup(ofxTexture3d *texture, ofVec3f voxelSize)
-{
-    if (bOwnsTexture && volumeTexture) 
-	{
-        delete volumeTexture;
-    }
-
-    volumeTexture = texture;
-    bOwnsTexture = false;
-
-	volTexWidth = volWidth = renderWidth = volumeTexture->texData.width;
-	volTexHeight = volHeight = renderHeight = volumeTexture->texData.height;
-	volTexDepth = volDepth = volumeTexture->texData.depth;
-
-    voxelRatio = voxelSize;
-
-    if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight) 
-	{
-        fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
-    }
-    bIsInitialized = true;
+	setupShader();
 }
 
 //--------------------------------------------------------------
