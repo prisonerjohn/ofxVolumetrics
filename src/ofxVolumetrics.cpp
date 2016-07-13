@@ -231,6 +231,7 @@ void ofxVolumetrics::updateShaderUniforms(int zOffset)
 	volumeShader.setUniform1f("quality", quality.z); // 0 ... 1
 	volumeShader.setUniform1f("density", density); // 0 ... 1
 	volumeShader.setUniform1f("threshold", threshold);//(float)mouseX/(float)ofGetWidth());
+	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 0);
 }
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset)

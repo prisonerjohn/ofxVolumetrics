@@ -11,7 +11,6 @@ public:
 		textureID = 0;
 
 		glInternalFormat = GL_RGB8;
-		glType = GL_RGB;
 		pixelType = GL_UNSIGNED_BYTE;
 
 		tex_t = 0;
@@ -34,8 +33,6 @@ public:
 	float tex_v;
 	float tex_d;
 	float depth;
-	
-	int glType;
 	int pixelType;
 };
 
@@ -50,13 +47,20 @@ public:
 
 	void loadData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
 	void loadData(const float* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
-	void loadData(const unsigned short* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const uint16_t* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const int16_t* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const uint32_t* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(const int32_t* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
 	void loadData(const ofPixels & pix, int d, int xOffset, int yOffset, int zOffset);
 	void loadData(const ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset);
 	void loadData(const ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset);
+	void loadData(const ofBufferObject & buffer, int glformat);
 
 	void bind();
 	void unbind();
+
+	void bindAsImage(GLuint unit, GLenum access, GLint level=0, GLboolean layered=0, GLint layer=0);
+	void copyTo(ofBufferObject & buffer) const;
 
 	void generateMipmaps();
 	void setMinMagFilters(GLenum min, GLenum mag);
