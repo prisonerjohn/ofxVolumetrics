@@ -7,6 +7,19 @@ ofxTexture3d::ofxTexture3d()
 	texData.textureTarget = GL_TEXTURE_3D;
 }
 
+
+//----------------------------------------------------------
+ofxTexture3d::ofxTexture3d(ofxTexture3d && mom)
+:ofxTexture(std::move(mom)){}
+
+//----------------------------------------------------------
+ofxTexture3d & ofxTexture3d::operator=(ofxTexture3d && mom){
+    texData = std::move(mom.texData);
+    mom.texData.bAllocated = false;
+    mom.texData.textureID = 0;
+    return *this;
+}
+
 //----------------------------------------------------------
 void ofxTexture3d::allocate(int w, int h, int d, int internalGlDataType)
 {

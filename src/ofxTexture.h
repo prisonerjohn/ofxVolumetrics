@@ -42,6 +42,9 @@ public:
 	ofxTexture();
 	virtual ~ofxTexture();
 
+    ofxTexture(ofxTexture && mom);
+    ofxTexture & operator=(ofxTexture && mom);
+
 	virtual void allocate(int w, int h, int d, int internalGlDataType) = 0;
 	void clear();
 
@@ -73,3 +76,8 @@ protected:
 	void ofRetain();
 	void ofRelease();
 };
+namespace std{
+inline void swap(ofxTexture & t1, ofxTexture & t2){
+    swap(t1.texData, t2.texData);
+}
+}

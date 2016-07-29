@@ -12,6 +12,21 @@ ofxTexture::~ofxTexture()
 }
 
 //----------------------------------------------------------
+ofxTexture::ofxTexture(ofxTexture && mom)
+:texData(std::move(mom.texData)){
+    mom.texData.bAllocated = false;
+    mom.texData.textureID = 0;
+}
+
+//----------------------------------------------------------
+ofxTexture & ofxTexture::operator=(ofxTexture && mom){
+    texData = std::move(mom.texData);
+    mom.texData.bAllocated = false;
+    mom.texData.textureID = 0;
+    return *this;
+}
+
+//----------------------------------------------------------
 void ofxTexture::ofRetain()
 {
 	retain(texData.textureID);
