@@ -1,5 +1,52 @@
 #include "ofxTexture.h"
-#include "ofTexture.cpp"
+
+// BEGIN Copied from ofTexture.cpp
+// TODO: Figure out best way to use these ofTexture functions
+
+static map<GLuint, int> & getTexturesIndex() {
+	static map<GLuint, int> * textureReferences = new map<GLuint, int>;
+	return *textureReferences;
+}
+
+static void retain(GLuint id) {
+	if (id != 0) {
+		if (getTexturesIndex().find(id) != getTexturesIndex().end()) {
+			getTexturesIndex()[id]++;
+		}
+		else {
+			getTexturesIndex()[id] = 1;
+		}
+	}
+}
+
+static void release(GLuint id) {
+	// try to free up the texture memory so we don't reallocate
+	// http://www.opengl.org/documentation/specs/man_pages/hardcopy/GL/html/gl/deletetextures.html
+	if (id != 0) {
+		if (getTexturesIndex().find(id) != getTexturesIndex().end()) {
+			getTexturesIndex()[id]--;
+			if (getTexturesIndex()[id] == 0) {
+
+#ifdef TARGET_ANDROID
+				if (!ofAppAndroidWindow::isSurfaceDestroyed())
+#endif
+					glDeleteTextures(1, (GLuint *)&id);
+
+				getTexturesIndex().erase(id);
+			}
+		}
+		else {
+			ofLogError("ofTexture") << "release(): something's wrong here, releasing unknown texture id " << id;
+
+#ifdef TARGET_ANDROID
+			if (!ofAppAndroidWindow::isSurfaceDestroyed())
+#endif
+				glDeleteTextures(1, (GLuint *)&id);
+		}
+	}
+}
+
+// END Copied from ofTexture.cpp
 
 //----------------------------------------------------------
 ofxTexture::ofxTexture()
