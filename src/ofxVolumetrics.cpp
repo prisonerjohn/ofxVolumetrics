@@ -25,20 +25,20 @@ ofxVolumetrics::~ofxVolumetrics()
 //--------------------------------------------------------------
 void ofxVolumetrics::setupVbo()
 {
-    ofVec3f volVerts[24];
-    ofVec3f volNormals[24];
+	ofDefaultVec3 volVerts[24];
+	ofDefaultVec3 volNormals[24];
     ofIndexType volIndices[36];
 
     /* Front side */
-    volNormals[0] = ofVec3f(0.0, 0.0, 1.0);
-    volNormals[1] = ofVec3f(0.0, 0.0, 1.0);
-    volNormals[2] = ofVec3f(0.0, 0.0, 1.0);
-    volNormals[3] = ofVec3f(0.0, 0.0, 1.0);
+    volNormals[0] = ofDefaultVec3(0.0, 0.0, 1.0);
+    volNormals[1] = ofDefaultVec3(0.0, 0.0, 1.0);
+    volNormals[2] = ofDefaultVec3(0.0, 0.0, 1.0);
+    volNormals[3] = ofDefaultVec3(0.0, 0.0, 1.0);
 
-    volVerts[0] = ofVec3f(1.0, 1.0, 1.0);
-    volVerts[1] = ofVec3f(0.0, 1.0, 1.0);
-    volVerts[2] = ofVec3f(0.0, 0.0, 1.0);
-    volVerts[3] = ofVec3f(1.0, 0.0, 1.0);
+    volVerts[0] = ofDefaultVec3(1.0, 1.0, 1.0);
+    volVerts[1] = ofDefaultVec3(0.0, 1.0, 1.0);
+    volVerts[2] = ofDefaultVec3(0.0, 0.0, 1.0);
+    volVerts[3] = ofDefaultVec3(1.0, 0.0, 1.0);
 
     volIndices[0] = 0;
     volIndices[1] = 1;
@@ -49,15 +49,15 @@ void ofxVolumetrics::setupVbo()
     volIndices[5] = 0;
 
     /* Right side */
-    volNormals[4] = ofVec3f(1.0, 0.0, 0.0);
-    volNormals[5] = ofVec3f(1.0, 0.0, 0.0);
-    volNormals[6] = ofVec3f(1.0, 0.0, 0.0);
-    volNormals[7] = ofVec3f(1.0, 0.0, 0.0);
+    volNormals[4] = ofDefaultVec3(1.0, 0.0, 0.0);
+    volNormals[5] = ofDefaultVec3(1.0, 0.0, 0.0);
+    volNormals[6] = ofDefaultVec3(1.0, 0.0, 0.0);
+    volNormals[7] = ofDefaultVec3(1.0, 0.0, 0.0);
 
-    volVerts[4] = ofVec3f(1.0, 1.0, 1.0);
-    volVerts[5] = ofVec3f(1.0, 0.0, 1.0);
-    volVerts[6] = ofVec3f(1.0, 0.0, 0.0);
-    volVerts[7] = ofVec3f(1.0, 1.0, 0.0);
+    volVerts[4] = ofDefaultVec3(1.0, 1.0, 1.0);
+    volVerts[5] = ofDefaultVec3(1.0, 0.0, 1.0);
+    volVerts[6] = ofDefaultVec3(1.0, 0.0, 0.0);
+    volVerts[7] = ofDefaultVec3(1.0, 1.0, 0.0);
 
     volIndices[6] = 4;
     volIndices[7] = 5;
@@ -68,15 +68,15 @@ void ofxVolumetrics::setupVbo()
     volIndices[11] = 4;
 
     /* Top side */
-    volNormals[8] = ofVec3f(0.0, 1.0, 0.0);
-    volNormals[9] = ofVec3f(0.0, 1.0, 0.0);
-    volNormals[10] = ofVec3f(0.0, 1.0, 0.0);
-    volNormals[11] = ofVec3f(0.0, 1.0, 0.0);
+    volNormals[8] = ofDefaultVec3(0.0, 1.0, 0.0);
+    volNormals[9] = ofDefaultVec3(0.0, 1.0, 0.0);
+    volNormals[10] = ofDefaultVec3(0.0, 1.0, 0.0);
+    volNormals[11] = ofDefaultVec3(0.0, 1.0, 0.0);
 
-    volVerts[8] = ofVec3f(1.0, 1.0, 1.0);
-    volVerts[9] = ofVec3f(1.0, 1.0, 0.0);
-    volVerts[10] = ofVec3f(0.0, 1.0, 0.0);
-    volVerts[11] = ofVec3f(0.0, 1.0, 1.0);
+    volVerts[8] = ofDefaultVec3(1.0, 1.0, 1.0);
+    volVerts[9] = ofDefaultVec3(1.0, 1.0, 0.0);
+    volVerts[10] = ofDefaultVec3(0.0, 1.0, 0.0);
+    volVerts[11] = ofDefaultVec3(0.0, 1.0, 1.0);
 
     volIndices[12] = 8;
     volIndices[13] = 9;
@@ -87,15 +87,15 @@ void ofxVolumetrics::setupVbo()
     volIndices[17] = 8;
 
     /* Left side */
-    volNormals[12] = ofVec3f(-1.0, 0.0, 0.0);
-    volNormals[13] = ofVec3f(-1.0, 0.0, 0.0);
-    volNormals[14] = ofVec3f(-1.0, 0.0, 0.0);
-    volNormals[15] = ofVec3f(-1.0, 0.0, 0.0);
+    volNormals[12] = ofDefaultVec3(-1.0, 0.0, 0.0);
+    volNormals[13] = ofDefaultVec3(-1.0, 0.0, 0.0);
+    volNormals[14] = ofDefaultVec3(-1.0, 0.0, 0.0);
+    volNormals[15] = ofDefaultVec3(-1.0, 0.0, 0.0);
 
-    volVerts[12] = ofVec3f(0.0, 1.0, 1.0);
-    volVerts[13] = ofVec3f(0.0, 1.0, 0.0);
-    volVerts[14] = ofVec3f(0.0, 0.0, 0.0);
-    volVerts[15] = ofVec3f(0.0, 0.0, 1.0);
+    volVerts[12] = ofDefaultVec3(0.0, 1.0, 1.0);
+    volVerts[13] = ofDefaultVec3(0.0, 1.0, 0.0);
+    volVerts[14] = ofDefaultVec3(0.0, 0.0, 0.0);
+    volVerts[15] = ofDefaultVec3(0.0, 0.0, 1.0);
 
     volIndices[18] = 12;
     volIndices[19] = 13;
@@ -106,15 +106,15 @@ void ofxVolumetrics::setupVbo()
     volIndices[23] = 12;
 
     /* Bottom side */
-    volNormals[16] = ofVec3f(0.0, -1.0, 0.0);
-    volNormals[17] = ofVec3f(0.0, -1.0, 0.0);
-    volNormals[18] = ofVec3f(0.0, -1.0, 0.0);
-    volNormals[19] = ofVec3f(0.0, -1.0, 0.0);
+    volNormals[16] = ofDefaultVec3(0.0, -1.0, 0.0);
+    volNormals[17] = ofDefaultVec3(0.0, -1.0, 0.0);
+    volNormals[18] = ofDefaultVec3(0.0, -1.0, 0.0);
+    volNormals[19] = ofDefaultVec3(0.0, -1.0, 0.0);
 
-    volVerts[16] = ofVec3f(0.0, 0.0, 0.0);
-    volVerts[17] = ofVec3f(1.0, 0.0, 0.0);
-    volVerts[18] = ofVec3f(1.0, 0.0, 1.0);
-    volVerts[19] = ofVec3f(0.0, 0.0, 1.0);
+    volVerts[16] = ofDefaultVec3(0.0, 0.0, 0.0);
+    volVerts[17] = ofDefaultVec3(1.0, 0.0, 0.0);
+    volVerts[18] = ofDefaultVec3(1.0, 0.0, 1.0);
+    volVerts[19] = ofDefaultVec3(0.0, 0.0, 1.0);
 
     volIndices[24] = 16;
     volIndices[25] = 17;
@@ -125,15 +125,15 @@ void ofxVolumetrics::setupVbo()
     volIndices[29] = 16;
 
     /* Back side */
-    volNormals[20] = ofVec3f(0.0, 0.0, -1.0);
-    volNormals[21] = ofVec3f(0.0, 0.0, -1.0);
-    volNormals[22] = ofVec3f(0.0, 0.0, -1.0);
-    volNormals[23] = ofVec3f(0.0, 0.0, -1.0);
+    volNormals[20] = ofDefaultVec3(0.0, 0.0, -1.0);
+    volNormals[21] = ofDefaultVec3(0.0, 0.0, -1.0);
+    volNormals[22] = ofDefaultVec3(0.0, 0.0, -1.0);
+    volNormals[23] = ofDefaultVec3(0.0, 0.0, -1.0);
 
-    volVerts[20] = ofVec3f(1.0, 0.0, 0.0);
-    volVerts[21] = ofVec3f(0.0, 0.0, 0.0);
-    volVerts[22] = ofVec3f(0.0, 1.0, 0.0);
-    volVerts[23] = ofVec3f(1.0, 1.0, 0.0);
+    volVerts[20] = ofDefaultVec3(1.0, 0.0, 0.0);
+    volVerts[21] = ofDefaultVec3(0.0, 0.0, 0.0);
+    volVerts[22] = ofDefaultVec3(0.0, 1.0, 0.0);
+    volVerts[23] = ofDefaultVec3(1.0, 1.0, 0.0);
 
     volIndices[30] = 20;
     volIndices[31] = 21;
@@ -231,7 +231,7 @@ void ofxVolumetrics::updateShaderUniforms(int zOffset)
 	volumeShader.setUniform1f("quality", quality.z); // 0 ... 1
 	volumeShader.setUniform1f("density", density); // 0 ... 1
 	volumeShader.setUniform1f("threshold", threshold);//(float)mouseX/(float)ofGetWidth());
-	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 0);
+	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 1);
 }
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset)
@@ -268,15 +268,15 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     GLint cull_mode_fbo = (scale.x*scale.y*scale.z) > 0 ? GL_CCW : GL_CW;
 
     /* raycasting pass */
-    fboRender.begin();
+    //fboRender.begin();
     volumeShader.begin();
-    ofClear(0,0,0,0);
+    //ofClear(0,0,0,0);
 
     //load matricies from outside the FBO
-    ofSetMatrixMode(OF_MATRIX_PROJECTION);
-    ofLoadMatrix(projMat);
-    ofSetMatrixMode(OF_MATRIX_MODELVIEW);
-    ofLoadMatrix(modlMat);
+    //ofSetMatrixMode(OF_MATRIX_PROJECTION);
+    //ofLoadMatrix(projMat);
+    //ofSetMatrixMode(OF_MATRIX_MODELVIEW);
+    //ofLoadMatrix(modlMat);
 
     //glMatrixMode(GL_PROJECTION);
     //glLoadMatrixf(proj);
@@ -296,15 +296,15 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     glFrontFace(cull_mode);
 
     volumeShader.end();
-    fboRender.end();
+ //   fboRender.end();
 
-    ofPushView();
+ //   ofPushView();
 
-	//glColor4iv(color);
-    ofSetupScreenOrtho();//ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,false,0,1000);
-    fboRender.draw(0,0,ofGetWidth(),ofGetHeight());
+	////glColor4iv(color);
+ //   ofSetupScreenOrtho();//ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,false,0,1000);
+ //   fboRender.draw(0,0,ofGetWidth(),ofGetHeight());
 
-    ofPopView();
+ //   ofPopView();
 
 }
 

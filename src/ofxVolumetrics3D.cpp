@@ -5,8 +5,7 @@
 //--------------------------------------------------------------
 ofxVolumetrics3D::ofxVolumetrics3D()
 	: ofxVolumetrics()
-{
-}
+{}
 
 //--------------------------------------------------------------
 void ofxVolumetrics3D::setupShader()
@@ -71,12 +70,4 @@ void ofxVolumetrics3D::setup(int w, int h, int d, ofVec3f voxelSize, bool usePow
     fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
     bIsInitialized = true;
 	setupShader();
-}
-
-//--------------------------------------------------------------
-void ofxVolumetrics3D::updateShaderUniforms(int zOffset)
-{
-	ofxVolumetrics::updateShaderUniforms(zOffset);
-
-	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 1);
 }

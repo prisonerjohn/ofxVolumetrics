@@ -15,5 +15,4 @@ public:
 	using ofxVolumetrics::setup;
 protected:
 	void setupShader() override;
-	void updateShaderUniforms(int zOffset) override;
 };
