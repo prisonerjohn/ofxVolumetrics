@@ -283,6 +283,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     //glMatrixMode(GL_MODELVIEW);
     //glLoadMatrixf(modl);
 
+	ofPushMatrix();
     ofTranslate(x-cubeSize.x/2, y-cubeSize.y/2, z-cubeSize.z/2);
     ofScale(cubeSize.x,cubeSize.y,cubeSize.z);
 
@@ -305,6 +306,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
  //   fboRender.draw(0,0,ofGetWidth(),ofGetHeight());
 
  //   ofPopView();
+	ofPopMatrix();
 
 }
 
