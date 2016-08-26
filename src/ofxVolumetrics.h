@@ -15,11 +15,13 @@ public:
 	ofxVolumetrics();
 	virtual ~ofxVolumetrics();
 
-	virtual void setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize = false) = 0;
-	void setup(ofxTexture *texture, ofVec3f voxelSize);
-	void setup(ofxTexture *texture, ofVec3f voxelSize, ofShader shader);
+	virtual void setup(int w, int h, int d, ofDefaultVec3 voxelSize, bool usePowerOfTwoTexSize = false) = 0;
+	void setup(ofxTexture *texture, ofDefaultVec3 voxelSize);
+	void setup(ofxTexture *texture, ofDefaultVec3 voxelSize, ofShader shader);
 
 	void clear();
+
+	virtual void updateTexture(ofxTexture *texture, ofDefaultVec3 voxelSize);
 
 	virtual void updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
 	virtual void updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
@@ -66,12 +68,12 @@ protected:
 
 	ofVbo volVbo;
 
-	ofVec3f voxelRatio;
+	ofDefaultVec3 voxelRatio;
 	bool bIsInitialized;
 	int volWidth, volHeight, volDepth;
 	int volTexWidth, volTexHeight, volTexDepth;
 	bool bIsPowerOfTwo;
-	ofVec3f quality;
+	ofDefaultVec3 quality;
 	float threshold;
 	float density;
 	int renderWidth, renderHeight;

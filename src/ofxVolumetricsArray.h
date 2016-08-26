@@ -11,7 +11,7 @@ class ofxVolumetricsArray
 public:
 	ofxVolumetricsArray();
 
-	void setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize=false) override;
+	void setup(int w, int h, int d, ofDefaultVec3 voxelSize, bool usePowerOfTwoTexSize=false) override;
 	using ofxVolumetrics::setup;
 protected:
 	void setupShader() override;

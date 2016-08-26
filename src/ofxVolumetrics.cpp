@@ -1,11 +1,13 @@
 #include "ofxVolumetrics.h"
 
+#include "glm/gtx/matrix_decompose.hpp"
+
 //--------------------------------------------------------------
 ofxVolumetrics::ofxVolumetrics()
 {
     volumeTexture = nullptr;
 
-    quality = ofVec3f(1.0);
+    quality = ofDefaultVec3(1.0);
     threshold = 1.0/255.0;
     density = 1.0;
     volWidth = renderWidth = 0;
@@ -150,35 +152,52 @@ void ofxVolumetrics::setupVbo()
     volVbo.setIndexData(volIndices, 36, GL_STATIC_DRAW);
 }
 
-
-void ofxVolumetrics::setup(ofxTexture *texture, ofVec3f voxelSize)
+void ofxVolumetrics::setup(ofxTexture *texture, ofDefaultVec3 voxelSize)
 {
-    if (bOwnsTexture && volumeTexture) {
-        delete volumeTexture;
-    }
+	clear();
 
-    volumeTexture = texture;
-    bOwnsTexture = false;
+	setupShader();  // Default shader.
+	updateTexture(texture, voxelSize);
 
-    volTexWidth = volWidth = renderWidth = volumeTexture->texData.width;
-    volTexHeight = volHeight = renderHeight = volumeTexture->texData.height;
-    volTexDepth = volDepth = volumeTexture->texData.depth;
-
-    voxelRatio = voxelSize;
-
-    if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight) {
-        fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
-    }
-
-    bIsInitialized = true;
-	setupShader();
+	bIsInitialized = true;
 }
 
-void ofxVolumetrics::setup(ofxTexture *texture, ofVec3f voxelSize, ofShader shader){
-	if (bOwnsTexture && volumeTexture) {
+void ofxVolumetrics::setup(ofxTexture *texture, ofDefaultVec3 voxelSize, ofShader shader)
+{
+	clear();
+
+	volumeShader = shader;
+	updateTexture(texture, voxelSize);
+
+	bIsInitialized = true;
+}
+
+void ofxVolumetrics::clear()
+{
+	volumeShader.unload();
+
+	if (bOwnsTexture)
+	{
+		volumeTexture->clear();
 		delete volumeTexture;
 	}
-	volumeShader = shader;
+	volumeTexture = nullptr;
+
+	volTexWidth = volWidth = renderWidth = 0;
+	volTexHeight = volHeight = renderHeight = 0;
+	volTexDepth = volDepth = 0;
+
+	bIsInitialized = false;
+}
+
+void ofxVolumetrics::updateTexture(ofxTexture *texture, ofDefaultVec3 voxelSize)
+{
+	if (bOwnsTexture)
+	{
+		volumeTexture->clear();
+		delete volumeTexture;
+	}
+
 	volumeTexture = texture;
 	bOwnsTexture = false;
 
@@ -188,29 +207,10 @@ void ofxVolumetrics::setup(ofxTexture *texture, ofVec3f voxelSize, ofShader shad
 
 	voxelRatio = voxelSize;
 
-	if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight) {
+	if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight)
+	{
 		fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
 	}
-
-	bIsInitialized = true;
-}
-
-void ofxVolumetrics::clear()
-{
-    volumeShader.unload();
-//    fboBackground.destroy();
-//    fboRender.destroy();
-
-    if (bOwnsTexture) {
-        volumeTexture->clear();
-        delete volumeTexture;
-    }
-    volumeTexture = nullptr;
-
-    volWidth = renderWidth = 0;
-    volHeight = renderHeight = 0;
-    volDepth = 0;
-    bIsInitialized = false;
 }
 
 void ofxVolumetrics::updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
@@ -236,7 +236,7 @@ void ofxVolumetrics::updateShaderUniforms(int zOffset)
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset)
 {
-    ofVec3f volumeSize = voxelRatio * ofVec3f(volWidth,volHeight,volDepth);
+	glm::vec3 volumeSize = voxelRatio * glm::vec3(volWidth,volHeight,volDepth);
     float maxDim = max(max(volumeSize.x, volumeSize.y), volumeSize.z);
     volumeSize = volumeSize * size / maxDim;
 
@@ -247,21 +247,17 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
 {
     updateRenderDimensions();
 
-    ofVec3f cubeSize = ofVec3f(w, h, d);
+    glm::vec3 cubeSize = glm::vec3(w, h, d);
 
-    //GLfloat modl[16], proj[16];
-    //glGetFloatv( GL_MODELVIEW_MATRIX, modl);
-    //glGetFloatv(GL_PROJECTION_MATRIX, proj);
-	/*GLint color[4];
-	glGetIntegerv(GL_CURRENT_COLOR, color);*/
+    glm::mat4 modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+	glm::mat4 projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
 
-    ofMatrix4x4 modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-    ofMatrix4x4 projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
-
-    ofVec3f scale,t;
-    ofQuaternion a,b;
-    //ofMatrix4x4(modl).decompose(t, a, scale, b);
-    modlMat.decompose(t, a, scale, b);
+    glm::vec3 scale;
+	glm::quat orientation;
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(modlMat, scale, orientation, translation, skew, perspective);
 
     GLint cull_mode;
     glGetIntegerv(GL_FRONT_FACE, &cull_mode);
@@ -272,29 +268,18 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
     volumeShader.begin();
     //ofClear(0,0,0,0);
 
-    //load matricies from outside the FBO
-    //ofSetMatrixMode(OF_MATRIX_PROJECTION);
-    //ofLoadMatrix(projMat);
-    //ofSetMatrixMode(OF_MATRIX_MODELVIEW);
-    //ofLoadMatrix(modlMat);
-
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadMatrixf(proj);
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadMatrixf(modl);
-
 	ofPushMatrix();
     ofTranslate(x-cubeSize.x/2, y-cubeSize.y/2, z-cubeSize.z/2);
     ofScale(cubeSize.x,cubeSize.y,cubeSize.z);
 
 	updateShaderUniforms(zTexOffset);
 
-    glFrontFace(cull_mode_fbo);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
+    //glFrontFace(cull_mode_fbo);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_FRONT);
     drawRGBCube();
-    glDisable(GL_CULL_FACE);
-    glFrontFace(cull_mode);
+    //glDisable(GL_CULL_FACE);
+    //glFrontFace(cull_mode);
 
     volumeShader.end();
  //   fboRender.end();
@@ -319,10 +304,10 @@ void ofxVolumetrics::drawRGBCube()
     //glEnableClientState(GL_COLOR_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    //glVertexPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
-    //glNormalPointer(GL_FLOAT, sizeof(ofVec3f), volNormals);
-    //glColorPointer(3,GL_FLOAT, sizeof(ofVec3f), volVerts);
-    //glTexCoordPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
+    //glVertexPointer(3, GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
+    //glNormalPointer(GL_FLOAT, sizeof(ofDefaultVec3), volNormals);
+    //glColorPointer(3,GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
+    //glTexCoordPointer(3, GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
 
     //glDrawArrays(GL_QUADS, 0, 24);
     //glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, volIndices);
