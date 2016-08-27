@@ -76,13 +76,13 @@ ofxTexture & ofxTexture::operator=(ofxTexture && mom){
 //----------------------------------------------------------
 void ofxTexture::ofRetain()
 {
-	retain(texData.textureID);
+	//retain(texData.textureID);
 }
 
 //----------------------------------------------------------
 void ofxTexture::ofRelease()
 {
-	release(texData.textureID);
+	//release(texData.textureID);
 }
 
 //----------------------------------------------------------

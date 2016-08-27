@@ -4,18 +4,19 @@
 
 //--------------------------------------------------------------
 ofxVolumetrics::ofxVolumetrics()
+	: volumeTexture(nullptr)
+	, bOwnsTexture(false)
+	, quality(ofDefaultVec3(1.0f))
+	, threshold(1.0f/255.0f)
+	, density(1.0f)
+	, volWidth(0)
+	, volHeight(0)
+	, volDepth(0)
+	, renderWidth(0)
+	, renderHeight(0)
+	, bIsInitialized(false)
 {
-    volumeTexture = nullptr;
-
-    quality = ofDefaultVec3(1.0);
-    threshold = 1.0/255.0;
-    density = 1.0;
-    volWidth = renderWidth = 0;
-    volHeight = renderHeight = 0;
-    volDepth = 0;
-    bIsInitialized = false;
-
-    setupVbo();
+	setupVbo();
 }
 
 //--------------------------------------------------------------
