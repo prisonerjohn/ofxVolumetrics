@@ -148,10 +148,20 @@ void ofxTexture::loadData(const ofFloatPixels & pix, int d, int xOffset, int yOf
 }
 
 //----------------------------------------------------------
-void ofxTexture::loadData(const ofBufferObject & buffer, int glFormat){
+void ofxTexture::loadData(const ofBufferObject & buffer, int glFormat)
+{
 	buffer.bind(GL_PIXEL_UNPACK_BUFFER);
 	loadData((const void*)nullptr,texData.width,texData.height,texData.depth,0,0,0,glFormat);
 	buffer.unbind(GL_PIXEL_UNPACK_BUFFER);
+}
+
+//----------------------------------------------------------
+void ofxTexture::clearData()
+{
+	static const GLuint clearColor = 0;
+	bind();
+	glClearTexImage(texData.textureTarget, 0, texData.glInternalFormat, texData.pixelType, &clearColor);
+	unbind();
 }
 
 //----------------------------------------------------------

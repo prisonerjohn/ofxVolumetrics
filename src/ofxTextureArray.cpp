@@ -16,7 +16,7 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gl_maxTexSize);
 		int gl_maxTexLayers;
 		glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &gl_maxTexLayers);
-		ofLogVerbose("ofxTextureArray::allocate") << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_maxTexLayers;
+		ofLogVerbose(__FUNCTION__) << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_maxTexLayers;
 	}
 	
 	texData.tex_w = w;
@@ -61,7 +61,7 @@ void ofxTextureArray::loadData(const void * data, int w, int h, int d, int xOffs
 {
 	if (w > texData.tex_w || h > texData.tex_h || d > texData.tex_d)
 	{
-		ofLogError("ofxTextureArray::loadData") << "Failed to upload " << w << "x" << h << "x" << d << " data to " << texData.tex_w << "x" << texData.tex_h << "x" << texData.tex_d << " texture";
+		ofLogError(__FUNCTION__) << "Failed to upload " << w << "x" << h << "x" << d << " data to " << texData.tex_w << "x" << texData.tex_h << "x" << texData.tex_d << " texture";
 		return;
 	}
 

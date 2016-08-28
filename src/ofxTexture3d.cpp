@@ -29,7 +29,7 @@ void ofxTexture3d::allocate(int w, int h, int d, int internalGlDataType)
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gl_maxTexSize);
 		int gl_max3DTexSize;
 		glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &gl_max3DTexSize);
-		ofLogVerbose("ofxTexture3d::allocate") << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_max3DTexSize;
+		ofLogVerbose(__FUNCTION__) << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_max3DTexSize;
 	}
 	
 	texData.tex_w = w;
@@ -77,7 +77,7 @@ void ofxTexture3d::loadData(const void * data, int w, int h, int d, int xOffset,
 {
     if (w > texData.tex_w || h > texData.tex_h || d > texData.tex_d)
     {
-		ofLogError("ofxTexture3d::loadData") << "Failed to upload " << w << "x" << h << "x" << d << " data to " << texData.tex_w << "x" << texData.tex_h << "x" << texData.tex_d << " texture";
+		ofLogError(__FUNCTION__) << "Failed to upload " << w << "x" << h << "x" << d << " data to " << texData.tex_w << "x" << texData.tex_h << "x" << texData.tex_d << " texture";
 		return;
     }
 
