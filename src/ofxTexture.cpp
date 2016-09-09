@@ -159,22 +159,19 @@ void ofxTexture::loadData(const ofBufferObject & buffer, int glFormat)
 void ofxTexture::clearData()
 {
 	static const GLuint clearColor = 0;
-	bind();
-	glClearTexImage(texData.textureTarget, 0, texData.glInternalFormat, texData.pixelType, &clearColor);
-	unbind();
+	glClearTexImage(texData.textureID, 0, ofGetGLFormatFromInternal(texData.glInternalFormat), texData.pixelType, &clearColor);
 }
 
 //----------------------------------------------------------
 void ofxTexture::bind()
 {
-	glActiveTexture((GLuint)texData.textureID);
 	glBindTexture(texData.textureTarget, (GLuint)texData.textureID);
 }
 
 //----------------------------------------------------------
 void ofxTexture::unbind()
 {
-	glActiveTexture(0);
+	glBindTexture(texData.textureTarget, 0);
 }
 
 //----------------------------------------------------------
