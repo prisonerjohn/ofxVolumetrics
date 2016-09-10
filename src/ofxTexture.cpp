@@ -158,8 +158,7 @@ void ofxTexture::loadData(const ofBufferObject & buffer, int glFormat)
 //----------------------------------------------------------
 void ofxTexture::clearData()
 {
-	static const GLuint clearColor = 0;
-	glClearTexImage(texData.textureID, 0, ofGetGLFormatFromInternal(texData.glInternalFormat), texData.pixelType, &clearColor);
+	glClearTexImage(texData.textureID, 0, ofGetGLFormatFromInternal(texData.glInternalFormat), texData.pixelType, nullptr);
 }
 
 //----------------------------------------------------------
