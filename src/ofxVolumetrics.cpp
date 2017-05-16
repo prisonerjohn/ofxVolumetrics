@@ -214,6 +214,11 @@ void ofxVolumetrics::updateTexture(ofxTexture *texture, ofDefaultVec3 voxelSize)
 	}
 }
 
+ofxTexture * ofxVolumetrics::getTexture() const
+{
+	return volumeTexture;
+}
+
 void ofxVolumetrics::updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
 {
     volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_RGBA);

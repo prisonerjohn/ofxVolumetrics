@@ -22,6 +22,7 @@ public:
 	void clear();
 
 	virtual void updateTexture(ofxTexture *texture, ofDefaultVec3 voxelSize);
+	ofxTexture * getTexture() const;
 
 	virtual void updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
 	virtual void updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
