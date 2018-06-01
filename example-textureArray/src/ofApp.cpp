@@ -3,22 +3,23 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    ofSetFrameRate(60);
-    ofSetLogLevel(OF_LOG_VERBOSE);
+	ofSetFrameRate(60);
+	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofBackground(0);
-
-	ofImage frameImage;
-	frameImage.setUseTexture(false);
 
 	// Cat animation sheet taken from Cortona docs: https://docs.coronalabs.com/guide/media/spriteAnimation/index.html
 	ofDirectory framesDir("frames");
 	framesDir.allowExt("png");
 	framesDir.listDir();
 	numLayers = framesDir.size();
+
+	ofImage frameImage;
+	frameImage.setUseTexture(false);
+
 	for (int i = 0; i < numLayers; ++i)
 	{
 		frameImage.load(framesDir.getPath(i));
-		if (i == 0) 
+		if (i == 0)
 		{
 			textureArray.allocate(frameImage.getWidth(), frameImage.getHeight(), numLayers, GL_RGBA8);
 		}
@@ -33,15 +34,15 @@ void ofApp::setup()
 	float quadWidth = ofGetWidth();
 	float quadHeight = quadWidth * textureArray.texData.height / textureArray.texData.width;
 
-	quadMesh.addVertex(ofVec3f(0, 0));
-	quadMesh.addVertex(ofVec3f(quadWidth, 0));
-	quadMesh.addVertex(ofVec3f(quadWidth, quadHeight));
-	quadMesh.addVertex(ofVec3f(0, quadHeight));
+	quadMesh.addVertex(ofDefaultVec3(0, 0, 0));
+	quadMesh.addVertex(ofDefaultVec3(quadWidth, 0, 0));
+	quadMesh.addVertex(ofDefaultVec3(quadWidth, quadHeight, 0));
+	quadMesh.addVertex(ofDefaultVec3(0, quadHeight, 0));
 
-	quadMesh.addTexCoord(ofVec2f(0, 0));
-	quadMesh.addTexCoord(ofVec2f(1, 0));
-	quadMesh.addTexCoord(ofVec2f(1, 1));
-	quadMesh.addTexCoord(ofVec2f(0, 1));
+	quadMesh.addTexCoord(ofDefaultVec2(0, 0));
+	quadMesh.addTexCoord(ofDefaultVec2(1, 0));
+	quadMesh.addTexCoord(ofDefaultVec2(1, 1));
+	quadMesh.addTexCoord(ofDefaultVec2(0, 1));
 
 	ofSetWindowShape(quadWidth, quadHeight);
 
@@ -53,10 +54,10 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    ofSetWindowTitle(ofToString(ofGetFrameRate()));
+	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 
 	currLayer += ofClamp(ofGetMouseX() / (float)ofGetWidth(), 0.0, 1.0);
-	while (currLayer >= numLayers) 
+	while (currLayer >= numLayers)
 	{
 		currLayer -= numLayers;
 	}
@@ -79,7 +80,7 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-    
+
 }
 
 //--------------------------------------------------------------
@@ -89,7 +90,7 @@ void ofApp::keyReleased(int key)
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y )
+void ofApp::mouseMoved(int x, int y)
 {
 
 }
