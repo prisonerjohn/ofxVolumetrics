@@ -14,7 +14,7 @@ ofxVolumetrics::ofxVolumetrics()
 	, volDepth(0)
 	, renderWidth(0)
 	, renderHeight(0)
-	, bIsInitialized(false)
+	, bInitialized(false)
 {
 	setupVbo();
 }
@@ -160,7 +160,7 @@ void ofxVolumetrics::setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize
 	setupShader();  // Default shader.
 	updateTexture(texture, voxelSize);
 
-	bIsInitialized = true;
+	bInitialized = true;
 }
 
 void ofxVolumetrics::setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize, ofShader shader)
@@ -170,7 +170,7 @@ void ofxVolumetrics::setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize
 	volumeShader = shader;
 	updateTexture(texture, voxelSize);
 
-	bIsInitialized = true;
+	bInitialized = true;
 }
 
 void ofxVolumetrics::clear()
@@ -188,7 +188,7 @@ void ofxVolumetrics::clear()
 	volTexHeight = volHeight = renderHeight = 0;
 	volTexDepth = volDepth = 0;
 
-	bIsInitialized = false;
+	bInitialized = false;
 }
 
 void ofxVolumetrics::updateTexture(ofxTexture * texture, const ofDefaultVec3 & voxelSize)
@@ -251,100 +251,31 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexO
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset) const
 {
-	updateRenderDimensions();
-
 	glm::vec3 cubeSize = glm::vec3(w, h, d);
 
-	glm::mat4 modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-	glm::mat4 projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
-
-	glm::vec3 scale;
-	glm::quat orientation;
-	glm::vec3 translation;
-	glm::vec3 skew;
-	glm::vec4 perspective;
-	glm::decompose(modlMat, scale, orientation, translation, skew, perspective);
-
-	GLint cull_mode;
-	glGetIntegerv(GL_FRONT_FACE, &cull_mode);
-	GLint cull_mode_fbo = (scale.x*scale.y*scale.z) > 0 ? GL_CCW : GL_CW;
-
-	/* raycasting pass */
-	//fboRender.begin();
 	volumeShader.begin();
-	//ofClear(0,0,0,0);
+	{
+		updateShaderUniforms(zTexOffset);
+		ofPushMatrix();
+		{
+			ofTranslate(x - cubeSize.x / 2, y - cubeSize.y / 2, z - cubeSize.z / 2);
+			ofScale(cubeSize.x, cubeSize.y, cubeSize.z);
 
-	ofPushMatrix();
-	ofTranslate(x - cubeSize.x / 2, y - cubeSize.y / 2, z - cubeSize.z / 2);
-	ofScale(cubeSize.x, cubeSize.y, cubeSize.z);
-
-	updateShaderUniforms(zTexOffset);
-
-	//glFrontFace(cull_mode_fbo);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_FRONT);
-	drawRGBCube();
-	//glDisable(GL_CULL_FACE);
-	//glFrontFace(cull_mode);
-
+			drawRGBCube();
+		}
+		ofPopMatrix();
+	}
 	volumeShader.end();
-	//   fboRender.end();
-
-	//   ofPushView();
-
-	////glColor4iv(color);
-	//   ofSetupScreenOrtho();//ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,false,0,1000);
-	//   fboRender.draw(0,0,ofGetWidth(),ofGetHeight());
-
-	//   ofPopView();
-	ofPopMatrix();
-
-	//ofPopView();
 }
 
 void ofxVolumetrics::drawRGBCube() const
 {
-	//volVbo.bind();
-
-	//glEnableClientState(GL_VERTEX_ARRAY);
-	//glEnableClientState(GL_NORMAL_ARRAY);
-	//glEnableClientState(GL_COLOR_ARRAY);
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	//glVertexPointer(3, GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
-	//glNormalPointer(GL_FLOAT, sizeof(ofDefaultVec3), volNormals);
-	//glColorPointer(3,GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
-	//glTexCoordPointer(3, GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
-
-	//glDrawArrays(GL_QUADS, 0, 24);
-	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, volIndices);
-
-	//volVbo.draw(GL_QUADS, 0, 24);
 	volVbo.drawElements(GL_TRIANGLES, 36);
-
-	//glDisableClientState(GL_COLOR_ARRAY);
-	//glDisableClientState(GL_NORMAL_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	//glDisableClientState(GL_VERTEX_ARRAY);    
-
-	//volVbo.unbind();
-}
-
-void ofxVolumetrics::updateRenderDimensions()
-{
-	//if ((int)(ofGetWidth() * quality.x) != renderWidth)
-	//{
-	//	renderWidth = ofGetWidth()*quality.x;
-	//	renderHeight = ofGetHeight()*quality.x;
-	//	fboRender.allocate(renderWidth, renderHeight, GL_RGBA);
-	//}
 }
 
 void ofxVolumetrics::setXyQuality(float q)
 {
 	quality.x = MAX(q, 0.01);
-
-	updateRenderDimensions();
 }
 void ofxVolumetrics::setZQuality(float q)
 {

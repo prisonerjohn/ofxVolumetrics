@@ -58,7 +58,6 @@ protected:
 	virtual void setupShader() = 0;
 	virtual void updateShaderUniforms(int zOffset) const;
 
-	void updateRenderDimensions();
 	void drawRGBCube() const;
 
 	ofFbo fboRender;
@@ -70,7 +69,7 @@ protected:
 	ofVbo volVbo;
 
 	ofDefaultVec3 voxelRatio;
-	bool bIsInitialized;
+	bool bInitialized;
 	int volWidth, volHeight, volDepth;
 	int volTexWidth, volTexHeight, volTexDepth;
 	bool bIsPowerOfTwo;

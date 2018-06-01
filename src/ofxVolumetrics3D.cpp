@@ -69,5 +69,5 @@ void ofxVolumetrics3D::setup(int w, int h, int d, const ofDefaultVec3 & voxelSiz
 
 	setupShader();
 
-	bIsInitialized = true;
+	bInitialized = true;
 }
