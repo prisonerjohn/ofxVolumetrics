@@ -1,4 +1,5 @@
-#include "ofMain.h"
+#include "ofAppRunner.h"
+#include "ofWindowSettings.h"
 #include "ofApp.h"
 
 //========================================================================

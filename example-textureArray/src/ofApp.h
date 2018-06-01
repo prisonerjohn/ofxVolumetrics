@@ -1,6 +1,9 @@
 #pragma once
 
-#include "ofMain.h"
+#include "ofBaseApp.h"
+#include "ofShader.h"
+#include "ofVboMesh.h"
+
 #include "ofxTextureArray.h"
 
 class ofApp : public ofBaseApp

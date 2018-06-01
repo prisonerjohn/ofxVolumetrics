@@ -1,5 +1,8 @@
 #include "ofApp.h"
 
+#include "ofGraphics.h"
+#include "ofImage.h"
+
 //--------------------------------------------------------------
 void ofApp::setup()
 {

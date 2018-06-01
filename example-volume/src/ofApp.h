@@ -2,7 +2,10 @@
 
 //#define USE_VOLUMETRICS_3D 1
 
-#include "ofMain.h"
+#include "ofBaseApp.h"
+#include "ofEasyCam.h"
+#include "ofImage.h"
+
 #include "ofxImageSequencePlayer.h"
 
 #ifdef USE_VOLUMETRICS_3D
