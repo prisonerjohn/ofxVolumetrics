@@ -18,24 +18,24 @@ void ofxTexture2d::loadData(const unsigned short* data, int w, int h, int xOffse
 void ofxTexture2d::loadData(const ofPixels & pix, int xOffset, int yOffset)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, pix.getWidth(), pix.getBytesPerChannel(), pix.getNumChannels());
-	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGlFormat(pix), ofGetGlType(pix));
+	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGLFormat(pix), ofGetGLType(pix));
 }
 void ofxTexture2d::loadData(const ofShortPixels & pix, int xOffset, int yOffset)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, pix.getWidth(), pix.getBytesPerChannel(), pix.getNumChannels());
-	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGlFormat(pix), ofGetGlType(pix));
+	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGLFormat(pix), ofGetGLType(pix));
 }
 void ofxTexture2d::loadData(const ofFloatPixels & pix, int xOffset, int yOffset)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, pix.getWidth(), pix.getBytesPerChannel(), pix.getNumChannels());
-	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGlFormat(pix), ofGetGlType(pix));
+	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGLFormat(pix), ofGetGLType(pix));
 }
 
 void ofxTexture2d::loadData(const void * data, int w, int h, int xOffset, int yOffset, int glFormat, int glType)
 {
 	if (glFormat != texData.glInternalFormat)
 	{
-		ofLogError(__FUNCTION__) << "Failed to upload format " << ofGetGlInternalFormatName(glFormat) << " data to " << ofGetGlInternalFormatName(texData.glInternalFormat) << " texture";
+		ofLogError(__FUNCTION__) << "Failed to upload format " << ofGetGLInternalFormatName(glFormat) << " data to " << ofGetGLInternalFormatName(texData.glInternalFormat) << " texture";
 		return;
 	}
 

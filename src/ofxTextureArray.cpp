@@ -43,7 +43,7 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 
 	texData.glInternalFormat = internalGlDataType;
 	// Get the glType (format) and pixelType (type) corresponding to the glTypeInteral (internalFormat)
-	texData.pixelType = ofGetGlTypeFromInternal(texData.glInternalFormat);
+	texData.pixelType = ofGetGLTypeFromInternal(texData.glInternalFormat);
 
 	// Attempt to free the previous bound texture.
 	clear();
