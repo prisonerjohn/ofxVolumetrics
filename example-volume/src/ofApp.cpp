@@ -21,9 +21,9 @@ void ofApp::setup()
 	for (int z = 0; z<volDepth; z++)
 	{
 		imageSequence.loadFrame(z);
-		for (int x = 0; x<volWidth; x++)
+		for (int x = 0; x < volWidth; x++)
 		{
-			for (int y = 0; y<volHeight; y++)
+			for (int y = 0; y < volHeight; y++)
 			{
 				// convert from greyscale to RGBA, false color
 				int i4 = ((x + volWidth * y) + z * volWidth*volHeight) * 4;
@@ -69,7 +69,7 @@ void ofApp::draw()
 	ofDrawRectangle(0, 0, 270, 90);
 	ofSetColor(255, 255, 255, 255);
 
-	ofDrawBitmapString("volume dimensions: " + ofToString(myVolume.getVolumeWidth()) + "x" + ofToString(myVolume.getVolumeHeight()) + "x" + ofToString(myVolume.getVolumeDepth()) + "\n" +
+	ofDrawBitmapString("Volume dimensions: " + ofToString(myVolume.getVolumeWidth()) + "x" + ofToString(myVolume.getVolumeHeight()) + "x" + ofToString(myVolume.getVolumeDepth()) + "\n" +
 		"FBO quality (q/Q): " + ofToString(myVolume.getRenderWidth()) + "x" + ofToString(myVolume.getRenderHeight()) + "\n" +
 		"Z quality (z/Z):   " + ofToString(myVolume.getZQuality()) + "\n" +
 		"Threshold (t/T):   " + ofToString(myVolume.getThreshold()) + "\n" +
