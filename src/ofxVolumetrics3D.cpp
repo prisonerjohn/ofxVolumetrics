@@ -13,18 +13,18 @@ ofxVolumetrics3D::ofxVolumetrics3D()
 //--------------------------------------------------------------
 void ofxVolumetrics3D::setupShader()
 {
-    string vertexShaderFixed =
+	std::string vertexShaderFixed =
 #include "shaders/gl/vert.glsl"
-    string fragmentShaderFixed =
+	std::string fragmentShaderFixed =
 #include "shaders/gl/frag.glsl"
 
-    string vertexShaderProgrammable =
+	std::string vertexShaderProgrammable =
 #include "shaders/gl3/vert.glsl"
-    string fragmentShaderProgrammable =
+	std::string fragmentShaderProgrammable =
 #include "shaders/gl3/frag.glsl"
 
-    string vertexShader = ofIsGLProgrammableRenderer()? vertexShaderProgrammable : vertexShaderFixed;
-    string fragmentShader = ofIsGLProgrammableRenderer()? fragmentShaderProgrammable : fragmentShaderFixed;
+	std::string vertexShader = ofIsGLProgrammableRenderer() ? vertexShaderProgrammable : vertexShaderFixed;
+	std::string fragmentShader = ofIsGLProgrammableRenderer() ? fragmentShaderProgrammable : fragmentShaderFixed;
 
     volumeShader.unload();
     volumeShader.setupShaderFromSource(GL_VERTEX_SHADER, vertexShader);

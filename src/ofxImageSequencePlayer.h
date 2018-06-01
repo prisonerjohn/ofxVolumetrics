@@ -6,7 +6,7 @@ class ofxImageSequencePlayer: public ofImage {
     public:
         ofxImageSequencePlayer() {
         };
-        void init(string prefix, int digits, string extension, int start) {
+        void init(const std::string & prefix, int digits, const std::string & extension, int start) {
             curFrame = start;
             startFrame = start;
             fPrefix = prefix;
@@ -58,7 +58,7 @@ class ofxImageSequencePlayer: public ofImage {
         unsigned int getSequenceLength() { return totalFrames; }
         bool isInitialized() { return initialized; }
 
-        string generateFullFilename() {
+		std::string generateFullFilename() {
             std::ostringstream ss;
             ss << std::setw(numDigits) << std::setfill('0') << curFrame;
             std::string result = ss.str();
@@ -72,7 +72,7 @@ class ofxImageSequencePlayer: public ofImage {
     private:
         bool initialized;
         unsigned int curFrame, startFrame;
-        string fPrefix, fExt;
+        std::string fPrefix, fExt;
         unsigned int numDigits;
         unsigned int totalFrames;
 };

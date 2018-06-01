@@ -13,9 +13,9 @@ ofxVolumetricsArray::ofxVolumetricsArray()
 //--------------------------------------------------------------
 void ofxVolumetricsArray::setupShader()
 {
-    string vertexShader =
+	std::string vertexShader =
 #include "shaders/gl3/vert_array.glsl"
-    string fragmentShader =
+	std::string fragmentShader =
 #include "shaders/gl3/frag_array.glsl"
 
     volumeShader.unload();
