@@ -35,13 +35,13 @@ void ofxTexture2d::loadData(const void * data, int w, int h, int xOffset, int yO
 {
 	if (glFormat != texData.glInternalFormat)
 	{
-		ofLogError("ofxTexture2d::loadData") << "Failed to upload format " << ofGetGlInternalFormatName(glFormat) << " data to " << ofGetGlInternalFormatName(texData.glInternalFormat) << " texture";
+		ofLogError(__FUNCTION__) << "Failed to upload format " << ofGetGlInternalFormatName(glFormat) << " data to " << ofGetGlInternalFormatName(texData.glInternalFormat) << " texture";
 		return;
 	}
 
 	if (w > texData.tex_w || h > texData.tex_h)
 	{
-		ofLogError("ofxTexture2d::loadData") << "Failed to upload " << w << "x" << h << " data to " << texData.tex_w << "x" << texData.tex_h << " texture";
+		ofLogError(__FUNCTION__) << "Failed to upload " << w << "x" << h << " data to " << texData.tex_w << "x" << texData.tex_h << " texture";
 		return;
 	}
 

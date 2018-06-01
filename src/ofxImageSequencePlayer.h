@@ -19,7 +19,7 @@ public:
 		initialized = load(generateFullFilename());
 
 		if (!initialized) {
-			ofLogWarning("ofxImageSequencePlayer::init") << "Unable to load inital image in the sequence: " << generateFullFilename();
+			ofLogWarning(__FUNCTION__) << "Unable to load inital image in the sequence: " << generateFullFilename();
 			return;
 		}
 
