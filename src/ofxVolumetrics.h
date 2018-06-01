@@ -59,7 +59,7 @@ protected:
 	ofFbo fboRender;
 	ofShader volumeShader;
 
-	ofxTexture *volumeTexture;
+	ofxTexture * volumeTexture;
 	bool bOwnsTexture;
 
 	ofVbo volVbo;

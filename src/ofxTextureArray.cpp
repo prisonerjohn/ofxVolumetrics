@@ -18,7 +18,7 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 		glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &gl_maxTexLayers);
 		ofLogVerbose("ofxTextureArray::allocate") << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_maxTexLayers;
 	}
-	
+
 	texData.tex_w = w;
 	texData.tex_h = h;
 	texData.tex_d = d;

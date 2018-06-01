@@ -31,9 +31,9 @@ public:
 		bAllocated = false;
 	}
 
-	float tex_v;
-	float tex_d;
-	float depth;
+	float tex_v; ///< Texture depth coordinate.
+	float tex_d; ///< Texture depth (in pixels).
+	float depth; ///< Texture display size.
 	
 	int glType;
 	int pixelType;
@@ -49,8 +49,8 @@ public:
 	void clear();
 
 	void loadData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
-	void loadData(float* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
-	void loadData(unsigned short* data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
+	void loadData(unsigned short * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat);
 	void loadData(ofPixels & pix, int d, int xOffset, int yOffset, int zOffset);
 	void loadData(ofShortPixels & pix, int d, int xOffset, int yOffset, int zOffset);
 	void loadData(ofFloatPixels & pix, int d, int xOffset, int yOffset, int zOffset);
