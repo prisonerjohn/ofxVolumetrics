@@ -1,6 +1,8 @@
 #pragma once
 
-#include "ofMain.h"
+#include "ofBufferObject.h"
+#include "ofPixels.h"
+#include "ofTexture.h"
 
 class ofxTextureData
 	: public ofTextureData

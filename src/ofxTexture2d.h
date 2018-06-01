@@ -1,7 +1,7 @@
 #pragma once
 
+#include "ofPixels.h"
 #include "ofTexture.h"
-#include "ofMain.h"
 
 class ofxTexture2d
 	: public ofTexture

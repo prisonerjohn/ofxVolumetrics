@@ -1,5 +1,7 @@
 #include "ofxTexture3d.h"
 
+#include "ofGLUtils.h"
+
 //----------------------------------------------------------
 ofxTexture3d::ofxTexture3d()
 	: ofxTexture()

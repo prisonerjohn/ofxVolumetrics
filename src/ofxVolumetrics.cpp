@@ -1,6 +1,8 @@
 #include "ofxVolumetrics.h"
 
 #include "glm/gtx/matrix_decompose.hpp"
+#include "ofGraphics.h"
+#include "ofMath.h"
 
 //--------------------------------------------------------------
 ofxVolumetrics::ofxVolumetrics()
@@ -243,7 +245,7 @@ void ofxVolumetrics::updateShaderUniforms(int zOffset) const
 void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset) const
 {
 	glm::vec3 volumeSize = voxelRatio * glm::vec3(volWidth, volHeight, volDepth);
-	float maxDim = max(max(volumeSize.x, volumeSize.y), volumeSize.z);
+	float maxDim = std::max(std::max(volumeSize.x, volumeSize.y), volumeSize.z);
 	volumeSize = volumeSize * size / maxDim;
 
 	drawVolume(x, y, z, volumeSize.x, volumeSize.y, volumeSize.z, zTexOffset);

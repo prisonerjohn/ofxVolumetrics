@@ -1,5 +1,7 @@
 #include "ofxTexture2d.h"
 
+#include "ofGLUtils.h"
+
 void ofxTexture2d::loadData(const unsigned char * data, int w, int h, int xOffset, int yOffset, int glFormat)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, w, 1, ofGetNumChannelsFromGLFormat(glFormat));

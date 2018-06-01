@@ -1,9 +1,6 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "ofxVolumetrics.h"
-#include "ofxTexture3d.h"
 
 class ofxVolumetrics3D
 	: public ofxVolumetrics

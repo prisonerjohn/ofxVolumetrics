@@ -1,5 +1,10 @@
 #include "ofxVolumetrics3D.h"
 
+#include "ofGLProgrammableRenderer.h"
+#include "ofMath.h"
+
+#include "ofxTexture3d.h"
+
 #define STRINGIFY(A) #A
 
 //--------------------------------------------------------------

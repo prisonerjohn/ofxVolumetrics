@@ -6,7 +6,11 @@
  Volumetric rendering algorithm adapted from Peter Trier (http://www.daimi.au.dk/~trier/?page_id=98)
 
 */
-#include "ofMain.h"
+
+#include "ofFbo.h"
+#include "ofShader.h"
+#include "ofVbo.h"
+
 #include "ofxTexture.h"
 
 class ofxVolumetrics
