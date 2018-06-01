@@ -11,8 +11,8 @@ class ofxVolumetrics3D
 public:
 	ofxVolumetrics3D();
 
-	void setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize = false) override;
-	void setup(ofxTexture3d *texture, ofVec3f voxelSize);
+	void setup(int w, int h, int d, const ofDefaultVec3 & voxelSize, bool usePowerOfTwoTexSize = false) override;
+	void setup(ofxTexture3d * texture, const ofDefaultVec3 & voxelSize);
 
 protected:
 	void setupShader() override;

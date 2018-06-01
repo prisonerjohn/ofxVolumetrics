@@ -33,7 +33,7 @@ void ofxVolumetrics3D::setupShader()
 }
 
 //--------------------------------------------------------------
-void ofxVolumetrics3D::setup(int w, int h, int d, ofVec3f voxelSize, bool usePowerOfTwoTexSize)
+void ofxVolumetrics3D::setup(int w, int h, int d, const ofDefaultVec3 & voxelSize, bool usePowerOfTwoTexSize)
 {
 	volTexWidth = volWidth = renderWidth = w;
 	volTexHeight = volHeight = renderHeight = h;
@@ -75,7 +75,7 @@ void ofxVolumetrics3D::setup(int w, int h, int d, ofVec3f voxelSize, bool usePow
 }
 
 //--------------------------------------------------------------
-void ofxVolumetrics3D::setup(ofxTexture3d *texture, ofVec3f voxelSize)
+void ofxVolumetrics3D::setup(ofxTexture3d * texture, const ofDefaultVec3 & voxelSize)
 {
     if (bOwnsTexture && volumeTexture) 
 	{
