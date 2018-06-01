@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxTextureArray.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.cpp">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<Filter Include="src">
+			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxVolumetrics">
+			<UniqueIdentifier>{0226A1D6-F91F-C208-3DA4-BE30}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxVolumetrics\src">
+			<UniqueIdentifier>{96061398-3BB0-BAA9-130B-5418}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxVolumetrics\src\shaders">
+			<UniqueIdentifier>{FE9CC689-1DB7-D20A-ED50-2C92}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxVolumetrics\src\shaders\gl">
+			<UniqueIdentifier>{A069B484-9899-BBED-55A8-58AA}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxVolumetrics\src\shaders\gl3">
+			<UniqueIdentifier>{F5F9B464-B23F-FC77-3621-2823}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxVolumetrics\src\shaders\gles2">
+			<UniqueIdentifier>{7DA1425E-82BD-3641-76D5-C247}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxImageSequencePlayer.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture2d.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTexture3d.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxTextureArray.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetrics3D.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxVolumetrics\src\ofxVolumetricsArray.h">
+			<Filter>addons\ofxVolumetrics\src</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc" />
+	</ItemGroup>
+</Project>
