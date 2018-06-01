@@ -27,23 +27,23 @@ public:
 	virtual void updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
 	virtual void updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
 
-	void drawVolume(float x, float y, float z, float size, int zTexOffset);
-	void drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset);
+	void drawVolume(float x, float y, float z, float size, int zTexOffset) const;
+	void drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset) const;
 
-	bool isInitialized();
+	bool isInitialized() const;
 
-	int getVolumeWidth();
-	int getVolumeHeight();
-	int getVolumeDepth();
+	int getVolumeWidth() const;
+	int getVolumeHeight() const;
+	int getVolumeDepth() const;
 
-	ofFbo & getFboReference();
-	int getRenderWidth();
-	int getRenderHeight();
+	const ofFbo & getFboReference() const;
+	int getRenderWidth() const;
+	int getRenderHeight() const;
 
-	float getXyQuality();
-	float getZQuality();
-	float getThreshold();
-	float getDensity();
+	float getXyQuality() const;
+	float getZQuality() const;
+	float getThreshold() const;
+	float getDensity() const;
 
 	void setXyQuality(float q);
 	void setZQuality(float q);
@@ -56,10 +56,10 @@ public:
 protected:
 	void setupVbo();
 	virtual void setupShader() = 0;
-	virtual void updateShaderUniforms(int zOffset);
+	virtual void updateShaderUniforms(int zOffset) const;
 
-	void drawRGBCube();
 	void updateRenderDimensions();
+	void drawRGBCube() const;
 
 	ofFbo fboRender;
 	ofShader volumeShader;

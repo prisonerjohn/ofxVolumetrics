@@ -228,7 +228,7 @@ void ofxVolumetrics::updateVolumeData(const float * data, int w, int h, int d, i
 	volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_R32F);
 }
 
-void ofxVolumetrics::updateShaderUniforms(int zOffset)
+void ofxVolumetrics::updateShaderUniforms(int zOffset) const
 {
 	volumeShader.setUniform3f("vol_d", (float)volWidth, (float)volHeight, (float)volDepth); //dimensions of the volume
 	volumeShader.setUniform3f("vol_tex_d", (float)volTexWidth, (float)volTexHeight, (float)volTexDepth); //dimensions of the volume texture
@@ -240,7 +240,7 @@ void ofxVolumetrics::updateShaderUniforms(int zOffset)
 	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 1);
 }
 
-void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset)
+void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset) const
 {
 	glm::vec3 volumeSize = voxelRatio * glm::vec3(volWidth, volHeight, volDepth);
 	float maxDim = max(max(volumeSize.x, volumeSize.y), volumeSize.z);
@@ -249,7 +249,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexO
 	drawVolume(x, y, z, volumeSize.x, volumeSize.y, volumeSize.z, zTexOffset);
 }
 
-void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset)
+void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset) const
 {
 	updateRenderDimensions();
 
@@ -302,7 +302,7 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
 	//ofPopView();
 }
 
-void ofxVolumetrics::drawRGBCube()
+void ofxVolumetrics::drawRGBCube() const
 {
 	//volVbo.bind();
 
@@ -376,47 +376,47 @@ void ofxVolumetrics::setVolumeTextureFilterMode(GLint filterMode)
 	volumeTexture->unbind();
 }
 
-bool ofxVolumetrics::isInitialized()
+bool ofxVolumetrics::isInitialized() const
 {
-	return bIsInitialized;
+	return bInitialized;
 }
-int ofxVolumetrics::getVolumeWidth()
+int ofxVolumetrics::getVolumeWidth() const
 {
 	return volWidth;
 }
-int ofxVolumetrics::getVolumeHeight()
+int ofxVolumetrics::getVolumeHeight() const
 {
 	return volHeight;
 }
-int ofxVolumetrics::getVolumeDepth()
+int ofxVolumetrics::getVolumeDepth() const
 {
 	return volDepth;
 }
-int ofxVolumetrics::getRenderWidth()
+int ofxVolumetrics::getRenderWidth() const
 {
 	return renderWidth;
 }
-int ofxVolumetrics::getRenderHeight()
+int ofxVolumetrics::getRenderHeight() const
 {
 	return renderHeight;
 }
-float ofxVolumetrics::getXyQuality()
+float ofxVolumetrics::getXyQuality() const
 {
 	return quality.x;
 }
-float ofxVolumetrics::getZQuality()
+float ofxVolumetrics::getZQuality() const
 {
 	return quality.z;
 }
-float ofxVolumetrics::getThreshold()
+float ofxVolumetrics::getThreshold() const
 {
 	return threshold;
 }
-float ofxVolumetrics::getDensity()
+float ofxVolumetrics::getDensity() const
 {
 	return density;
 }
-ofFbo & ofxVolumetrics::getFboReference()
+const ofFbo & ofxVolumetrics::getFboReference() const
 {
 	return fboRender;
 }
