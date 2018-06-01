@@ -14,7 +14,7 @@ void ofApp::setup()
 	volHeight = imageSequence.getHeight();
 	volDepth = imageSequence.getSequenceLength();
 
-	cout << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth << "\n";
+	ofLogNotice(__FUNCTION__) << "Setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
 
 	volumeData = new unsigned char[volWidth*volHeight*volDepth * 4];
 
@@ -47,13 +47,13 @@ void ofApp::setup()
 
 	cam.setDistance(1000);
 	cam.enableMouseInput();
+	cam.disableInertia();
+	cam.setUpAxis(glm::vec3(0, 0, -1));
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
-{
-	ofSetWindowTitle(ofToString(ofGetFrameRate()));
-}
+{}
 
 //--------------------------------------------------------------
 void ofApp::draw()
@@ -74,8 +74,8 @@ void ofApp::draw()
 		"Z quality (z/Z):   " + ofToString(myVolume.getZQuality()) + "\n" +
 		"Threshold (t/T):   " + ofToString(myVolume.getThreshold()) + "\n" +
 		"Density (d/D):     " + ofToString(myVolume.getDensity()) + "\n" +
-		"Filter mode (l/n): " + (linearFilter ? "linear" : "nearest"), 20, 20);
-
+		"Filter mode (l/n): " + (linearFilter ? "linear" : "nearest") + "\n" +
+		"Fps: " + ofToString(ofGetFrameRate()), 20, 20);
 }
 
 //--------------------------------------------------------------

@@ -13,5 +13,5 @@ public:
 	using ofxTexture::loadData;
 
 protected:
-	void loadData(void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat) override;
+	void loadData(const void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat) override;
 };

@@ -1,11 +1,13 @@
 STRINGIFY(
 \n#version 150\n
 
+uniform vec4 globalColor;
+
 in vec4 vPosition;
 in vec3 vTexCoord;
 in vec3 vCameraPosition;
 
-out vec4 vFragColor;
+out vec4 fragColor;
 
 uniform sampler3D volume_tex;
 uniform vec3 vol_d;
@@ -100,6 +102,6 @@ void main()
         }
     }
     // export the rendered color
-    vFragColor = col_acc;
+    fragColor = col_acc * globalColor;
 }
 );

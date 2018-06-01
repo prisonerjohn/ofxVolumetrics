@@ -12,9 +12,8 @@ public:
 	ofxVolumetrics3D();
 
 	void setup(int w, int h, int d, const ofDefaultVec3 & voxelSize, bool usePowerOfTwoTexSize = false) override;
-	void setup(ofxTexture3d * texture, const ofDefaultVec3 & voxelSize);
+	using ofxVolumetrics::setup;
 
 protected:
 	void setupShader() override;
-	void updateShaderUniforms(int zOffset) override;
 };

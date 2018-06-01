@@ -16,7 +16,7 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 		glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gl_maxTexSize);
 		int gl_maxTexLayers;
 		glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &gl_maxTexLayers);
-		ofLogVerbose("ofxTextureArray::allocate") << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_maxTexLayers;
+		ofLogVerbose(__FUNCTION__) << "Max size is " << gl_maxTexSize << "x" << gl_maxTexSize << "x" << gl_maxTexLayers;
 	}
 
 	texData.tex_w = w;
@@ -29,7 +29,6 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 
 	texData.glInternalFormat = internalGlDataType;
 	// Get the glType (format) and pixelType (type) corresponding to the glTypeInteral (internalFormat)
-	texData.glType = ofGetGLFormatFromInternal(texData.glInternalFormat);
 	texData.pixelType = ofGetGlTypeFromInternal(texData.glInternalFormat);
 
 	// Attempt to free the previous bound texture.
@@ -58,22 +57,16 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 }
 
 //----------------------------------------------------------
-void ofxTextureArray::loadData(void * data, int w, int h, int d, int xOffset, int yOffset, int layerOffset, int glFormat)
+void ofxTextureArray::loadData(const void * data, int w, int h, int d, int xOffset, int yOffset, int layerOffset, int glFormat)
 {
-	if (glFormat != texData.glType)
-	{
-		ofLogError("ofxTextureArray::loadData") << "Failed to upload format " << ofGetGlInternalFormatName(glFormat) << " data to " << ofGetGlInternalFormatName(texData.glType) << " texture";
-		return;
-	}
-
 	if (w > texData.tex_w || h > texData.tex_h || d > texData.tex_d)
 	{
-		ofLogError("ofxTextureArray::loadData") << "Failed to upload " << w << "x" << h << "x" << d << " data to " << texData.tex_w << "x" << texData.tex_h << "x" << texData.tex_d << " texture";
+		ofLogError(__FUNCTION__) << "Failed to upload " << w << "x" << h << "x" << d << " data to " << texData.tex_w << "x" << texData.tex_h << "x" << texData.tex_d << " texture";
 		return;
 	}
 
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, w, 1, ofGetNumChannelsFromGLFormat(glFormat));
 	bind();
-	glTexSubImage3D(texData.textureTarget, 0, xOffset, yOffset, layerOffset, w, h, d, texData.glType, texData.pixelType, data);
+	glTexSubImage3D(texData.textureTarget, 0, xOffset, yOffset, layerOffset, w, h, d, glFormat, texData.pixelType, data);
 	unbind();
 }

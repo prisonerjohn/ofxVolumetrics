@@ -1,20 +1,21 @@
 #include "ofxVolumetrics.h"
 
-#include <glm/gtx/matrix_decompose.hpp>
+#include "glm/gtx/matrix_decompose.hpp"
 
 //--------------------------------------------------------------
 ofxVolumetrics::ofxVolumetrics()
+	: volumeTexture(nullptr)
+	, bOwnsTexture(false)
+	, quality(ofDefaultVec3(1.0f))
+	, threshold(1.0f / 255.0f)
+	, density(1.0f)
+	, volWidth(0)
+	, volHeight(0)
+	, volDepth(0)
+	, renderWidth(0)
+	, renderHeight(0)
+	, bIsInitialized(false)
 {
-	volumeTexture = nullptr;
-
-	quality = ofDefaultVec3(1.0);
-	threshold = 1.0 / 255.0;
-	density = 1.0;
-	volWidth = renderWidth = 0;
-	volHeight = renderHeight = 0;
-	volDepth = 0;
-	bIsInitialized = false;
-
 	setupVbo();
 }
 
@@ -32,15 +33,15 @@ void ofxVolumetrics::setupVbo()
 	ofIndexType volIndices[36];
 
 	/* Front side */
-	volNormals[0] = { 0.0, 0.0, 1.0 };
-	volNormals[1] = { 0.0, 0.0, 1.0 };
-	volNormals[2] = { 0.0, 0.0, 1.0 };
-	volNormals[3] = { 0.0, 0.0, 1.0 };
+	volNormals[0] = ofDefaultVec3(0.0, 0.0, 1.0);
+	volNormals[1] = ofDefaultVec3(0.0, 0.0, 1.0);
+	volNormals[2] = ofDefaultVec3(0.0, 0.0, 1.0);
+	volNormals[3] = ofDefaultVec3(0.0, 0.0, 1.0);
 
-	volVerts[0] = { 1.0, 1.0, 1.0 };
-	volVerts[1] = { 0.0, 1.0, 1.0 };
-	volVerts[2] = { 0.0, 0.0, 1.0 };
-	volVerts[3] = { 1.0, 0.0, 1.0 };
+	volVerts[0] = ofDefaultVec3(1.0, 1.0, 1.0);
+	volVerts[1] = ofDefaultVec3(0.0, 1.0, 1.0);
+	volVerts[2] = ofDefaultVec3(0.0, 0.0, 1.0);
+	volVerts[3] = ofDefaultVec3(1.0, 0.0, 1.0);
 
 	volIndices[0] = 0;
 	volIndices[1] = 1;
@@ -51,15 +52,15 @@ void ofxVolumetrics::setupVbo()
 	volIndices[5] = 0;
 
 	/* Right side */
-	volNormals[4] = { 1.0, 0.0, 0.0 };
-	volNormals[5] = { 1.0, 0.0, 0.0 };
-	volNormals[6] = { 1.0, 0.0, 0.0 };
-	volNormals[7] = { 1.0, 0.0, 0.0 };
+	volNormals[4] = ofDefaultVec3(1.0, 0.0, 0.0);
+	volNormals[5] = ofDefaultVec3(1.0, 0.0, 0.0);
+	volNormals[6] = ofDefaultVec3(1.0, 0.0, 0.0);
+	volNormals[7] = ofDefaultVec3(1.0, 0.0, 0.0);
 
-	volVerts[4] = { 1.0, 1.0, 1.0 };
-	volVerts[5] = { 1.0, 0.0, 1.0 };
-	volVerts[6] = { 1.0, 0.0, 0.0 };
-	volVerts[7] = { 1.0, 1.0, 0.0 };
+	volVerts[4] = ofDefaultVec3(1.0, 1.0, 1.0);
+	volVerts[5] = ofDefaultVec3(1.0, 0.0, 1.0);
+	volVerts[6] = ofDefaultVec3(1.0, 0.0, 0.0);
+	volVerts[7] = ofDefaultVec3(1.0, 1.0, 0.0);
 
 	volIndices[6] = 4;
 	volIndices[7] = 5;
@@ -70,15 +71,15 @@ void ofxVolumetrics::setupVbo()
 	volIndices[11] = 4;
 
 	/* Top side */
-	volNormals[8]  = { 0.0, 1.0, 0.0 };
-	volNormals[9]  = { 0.0, 1.0, 0.0 };
-	volNormals[10] = { 0.0, 1.0, 0.0 };
-	volNormals[11] = { 0.0, 1.0, 0.0 };
+	volNormals[8] = ofDefaultVec3(0.0, 1.0, 0.0);
+	volNormals[9] = ofDefaultVec3(0.0, 1.0, 0.0);
+	volNormals[10] = ofDefaultVec3(0.0, 1.0, 0.0);
+	volNormals[11] = ofDefaultVec3(0.0, 1.0, 0.0);
 
-	volVerts[8]  = { 1.0, 1.0, 1.0 };
-	volVerts[9]  = { 1.0, 1.0, 0.0 };
-	volVerts[10] = { 0.0, 1.0, 0.0 };
-	volVerts[11] = { 0.0, 1.0, 1.0 };
+	volVerts[8] = ofDefaultVec3(1.0, 1.0, 1.0);
+	volVerts[9] = ofDefaultVec3(1.0, 1.0, 0.0);
+	volVerts[10] = ofDefaultVec3(0.0, 1.0, 0.0);
+	volVerts[11] = ofDefaultVec3(0.0, 1.0, 1.0);
 
 	volIndices[12] = 8;
 	volIndices[13] = 9;
@@ -89,15 +90,15 @@ void ofxVolumetrics::setupVbo()
 	volIndices[17] = 8;
 
 	/* Left side */
-	volNormals[12] = { -1.0, 0.0, 0.0 };
-	volNormals[13] = { -1.0, 0.0, 0.0 };
-	volNormals[14] = { -1.0, 0.0, 0.0 };
-	volNormals[15] = { -1.0, 0.0, 0.0 };
+	volNormals[12] = ofDefaultVec3(-1.0, 0.0, 0.0);
+	volNormals[13] = ofDefaultVec3(-1.0, 0.0, 0.0);
+	volNormals[14] = ofDefaultVec3(-1.0, 0.0, 0.0);
+	volNormals[15] = ofDefaultVec3(-1.0, 0.0, 0.0);
 
-	volVerts[12] = { 0.0, 1.0, 1.0 };
-	volVerts[13] = { 0.0, 1.0, 0.0 };
-	volVerts[14] = { 0.0, 0.0, 0.0 };
-	volVerts[15] = { 0.0, 0.0, 1.0 };
+	volVerts[12] = ofDefaultVec3(0.0, 1.0, 1.0);
+	volVerts[13] = ofDefaultVec3(0.0, 1.0, 0.0);
+	volVerts[14] = ofDefaultVec3(0.0, 0.0, 0.0);
+	volVerts[15] = ofDefaultVec3(0.0, 0.0, 1.0);
 
 	volIndices[18] = 12;
 	volIndices[19] = 13;
@@ -108,15 +109,15 @@ void ofxVolumetrics::setupVbo()
 	volIndices[23] = 12;
 
 	/* Bottom side */
-	volNormals[16] = { 0.0, -1.0, 0.0 };
-	volNormals[17] = { 0.0, -1.0, 0.0 };
-	volNormals[18] = { 0.0, -1.0, 0.0 };
-	volNormals[19] = { 0.0, -1.0, 0.0 };
+	volNormals[16] = ofDefaultVec3(0.0, -1.0, 0.0);
+	volNormals[17] = ofDefaultVec3(0.0, -1.0, 0.0);
+	volNormals[18] = ofDefaultVec3(0.0, -1.0, 0.0);
+	volNormals[19] = ofDefaultVec3(0.0, -1.0, 0.0);
 
-	volVerts[16] = { 0.0, 0.0, 0.0 };
-	volVerts[17] = { 1.0, 0.0, 0.0 };
-	volVerts[18] = { 1.0, 0.0, 1.0 };
-	volVerts[19] = { 0.0, 0.0, 1.0 };
+	volVerts[16] = ofDefaultVec3(0.0, 0.0, 0.0);
+	volVerts[17] = ofDefaultVec3(1.0, 0.0, 0.0);
+	volVerts[18] = ofDefaultVec3(1.0, 0.0, 1.0);
+	volVerts[19] = ofDefaultVec3(0.0, 0.0, 1.0);
 
 	volIndices[24] = 16;
 	volIndices[25] = 17;
@@ -127,15 +128,15 @@ void ofxVolumetrics::setupVbo()
 	volIndices[29] = 16;
 
 	/* Back side */
-	volNormals[20] = { 0.0, 0.0, -1.0 };
-	volNormals[21] = { 0.0, 0.0, -1.0 };
-	volNormals[22] = { 0.0, 0.0, -1.0 };
-	volNormals[23] = { 0.0, 0.0, -1.0 };
+	volNormals[20] = ofDefaultVec3(0.0, 0.0, -1.0);
+	volNormals[21] = ofDefaultVec3(0.0, 0.0, -1.0);
+	volNormals[22] = ofDefaultVec3(0.0, 0.0, -1.0);
+	volNormals[23] = ofDefaultVec3(0.0, 0.0, -1.0);
 
-	volVerts[20] = { 1.0, 0.0, 0.0 };
-	volVerts[21] = { 0.0, 0.0, 0.0 };
-	volVerts[22] = { 0.0, 1.0, 0.0 };
-	volVerts[23] = { 1.0, 1.0, 0.0 };
+	volVerts[20] = ofDefaultVec3(1.0, 0.0, 0.0);
+	volVerts[21] = ofDefaultVec3(0.0, 0.0, 0.0);
+	volVerts[22] = ofDefaultVec3(0.0, 1.0, 0.0);
+	volVerts[23] = ofDefaultVec3(1.0, 1.0, 0.0);
 
 	volIndices[30] = 20;
 	volIndices[31] = 21;
@@ -152,11 +153,49 @@ void ofxVolumetrics::setupVbo()
 	volVbo.setIndexData(volIndices, 36, GL_STATIC_DRAW);
 }
 
-
-void ofxVolumetrics::setup(ofxTexture *texture, const ofDefaultVec3 & voxelSize)
+void ofxVolumetrics::setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize)
 {
-	if (bOwnsTexture && volumeTexture)
+	clear();
+
+	setupShader();  // Default shader.
+	updateTexture(texture, voxelSize);
+
+	bIsInitialized = true;
+}
+
+void ofxVolumetrics::setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize, ofShader shader)
+{
+	clear();
+
+	volumeShader = shader;
+	updateTexture(texture, voxelSize);
+
+	bIsInitialized = true;
+}
+
+void ofxVolumetrics::clear()
+{
+	volumeShader.unload();
+
+	if (bOwnsTexture)
 	{
+		volumeTexture->clear();
+		delete volumeTexture;
+	}
+	volumeTexture = nullptr;
+
+	volTexWidth = volWidth = renderWidth = 0;
+	volTexHeight = volHeight = renderHeight = 0;
+	volTexDepth = volDepth = 0;
+
+	bIsInitialized = false;
+}
+
+void ofxVolumetrics::updateTexture(ofxTexture * texture, const ofDefaultVec3 & voxelSize)
+{
+	if (bOwnsTexture)
+	{
+		volumeTexture->clear();
 		delete volumeTexture;
 	}
 
@@ -173,31 +212,20 @@ void ofxVolumetrics::setup(ofxTexture *texture, const ofDefaultVec3 & voxelSize)
 	{
 		fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
 	}
-
-	bIsInitialized = true;
 }
 
-void ofxVolumetrics::clear()
+ofxTexture * ofxVolumetrics::getTexture() const
 {
-	volumeShader.unload();
-	//fboBackground.destroy();
-	//fboRender.destroy();
-
-	if (bOwnsTexture) {
-		volumeTexture->clear();
-		delete volumeTexture;
-	}
-	volumeTexture = nullptr;
-
-	volWidth = renderWidth = 0;
-	volHeight = renderHeight = 0;
-	volDepth = 0;
-	bIsInitialized = false;
+	return volumeTexture;
 }
 
-void ofxVolumetrics::updateVolumeData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
+void ofxVolumetrics::updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset)
 {
 	volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_RGBA);
+}
+
+void ofxVolumetrics::updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset) {
+	volumeTexture->loadData(data, w, h, d, xOffset, yOffset, zOffset, GL_R32F);
 }
 
 void ofxVolumetrics::updateShaderUniforms(int zOffset)
@@ -209,11 +237,12 @@ void ofxVolumetrics::updateShaderUniforms(int zOffset)
 	volumeShader.setUniform1f("quality", quality.z); // 0 ... 1
 	volumeShader.setUniform1f("density", density); // 0 ... 1
 	volumeShader.setUniform1f("threshold", threshold);//(float)mouseX/(float)ofGetWidth());
+	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 1);
 }
 
 void ofxVolumetrics::drawVolume(float x, float y, float z, float size, int zTexOffset)
 {
-	auto volumeSize = voxelRatio * ofDefaultVec3(volWidth, volHeight, volDepth);
+	glm::vec3 volumeSize = voxelRatio * glm::vec3(volWidth, volHeight, volDepth);
 	float maxDim = max(max(volumeSize.x, volumeSize.y), volumeSize.z);
 	volumeSize = volumeSize * size / maxDim;
 
@@ -224,66 +253,53 @@ void ofxVolumetrics::drawVolume(float x, float y, float z, float w, float h, flo
 {
 	updateRenderDimensions();
 
-	auto cubeSize = ofDefaultVec3(w, h, d);
+	glm::vec3 cubeSize = glm::vec3(w, h, d);
 
-	//GLfloat modl[16], proj[16];
-	//glGetFloatv( GL_MODELVIEW_MATRIX, modl);
-	//glGetFloatv(GL_PROJECTION_MATRIX, proj);
-	GLint color[4];
-	glGetIntegerv(GL_CURRENT_COLOR, color);
-
-	auto modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
-	auto projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
+	glm::mat4 modlMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+	glm::mat4 projMat = ofGetCurrentMatrix(OF_MATRIX_PROJECTION);
 
 	glm::vec3 scale;
-	glm::quat rotation;
+	glm::quat orientation;
 	glm::vec3 translation;
 	glm::vec3 skew;
 	glm::vec4 perspective;
-	glm::decompose(modlMat, scale, rotation, translation, skew, perspective);
+	glm::decompose(modlMat, scale, orientation, translation, skew, perspective);
 
 	GLint cull_mode;
 	glGetIntegerv(GL_FRONT_FACE, &cull_mode);
 	GLint cull_mode_fbo = (scale.x*scale.y*scale.z) > 0 ? GL_CCW : GL_CW;
 
 	/* raycasting pass */
-	fboRender.begin();
+	//fboRender.begin();
 	volumeShader.begin();
-	ofClear(0, 0, 0, 0);
+	//ofClear(0,0,0,0);
 
-	//load matricies from outside the FBO
-	ofSetMatrixMode(OF_MATRIX_PROJECTION);
-	ofLoadMatrix(projMat);
-	ofSetMatrixMode(OF_MATRIX_MODELVIEW);
-	ofLoadMatrix(modlMat);
-
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(proj);
-	//glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(modl);
-
+	ofPushMatrix();
 	ofTranslate(x - cubeSize.x / 2, y - cubeSize.y / 2, z - cubeSize.z / 2);
 	ofScale(cubeSize.x, cubeSize.y, cubeSize.z);
 
 	updateShaderUniforms(zTexOffset);
 
-	glFrontFace(cull_mode_fbo);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
+	//glFrontFace(cull_mode_fbo);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_FRONT);
 	drawRGBCube();
-	glDisable(GL_CULL_FACE);
-	glFrontFace(cull_mode);
+	//glDisable(GL_CULL_FACE);
+	//glFrontFace(cull_mode);
 
 	volumeShader.end();
-	fboRender.end();
+	//   fboRender.end();
 
-	ofPushView();
+	//   ofPushView();
 
-	glColor4iv(color);
-	ofSetupScreenOrtho();//ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,false,0,1000);
-	fboRender.draw(0, 0, ofGetWidth(), ofGetHeight());
+	////glColor4iv(color);
+	//   ofSetupScreenOrtho();//ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,false,0,1000);
+	//   fboRender.draw(0,0,ofGetWidth(),ofGetHeight());
 
-	ofPopView();
+	//   ofPopView();
+	ofPopMatrix();
+
+	//ofPopView();
 }
 
 void ofxVolumetrics::drawRGBCube()
@@ -295,10 +311,10 @@ void ofxVolumetrics::drawRGBCube()
 	//glEnableClientState(GL_COLOR_ARRAY);
 	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	//glVertexPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
-	//glNormalPointer(GL_FLOAT, sizeof(ofVec3f), volNormals);
-	//glColorPointer(3,GL_FLOAT, sizeof(ofVec3f), volVerts);
-	//glTexCoordPointer(3, GL_FLOAT, sizeof(ofVec3f), volVerts);
+	//glVertexPointer(3, GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
+	//glNormalPointer(GL_FLOAT, sizeof(ofDefaultVec3), volNormals);
+	//glColorPointer(3,GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
+	//glTexCoordPointer(3, GL_FLOAT, sizeof(ofDefaultVec3), volVerts);
 
 	//glDrawArrays(GL_QUADS, 0, 24);
 	//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, volIndices);
@@ -400,7 +416,7 @@ float ofxVolumetrics::getDensity()
 {
 	return density;
 }
-ofFbo & ofxVolumetrics::getFboReference() 
+ofFbo & ofxVolumetrics::getFboReference()
 {
 	return fboRender;
 }

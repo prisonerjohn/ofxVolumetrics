@@ -1,37 +1,37 @@
 #include "ofxTexture2d.h"
 
-void ofxTexture2d::loadData(unsigned char * data, int w, int h, int xOffset, int yOffset, int glFormat)
+void ofxTexture2d::loadData(const unsigned char * data, int w, int h, int xOffset, int yOffset, int glFormat)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, w, 1, ofGetNumChannelsFromGLFormat(glFormat));
-	loadData((void *)data, w, h, xOffset, yOffset, glFormat, GL_UNSIGNED_BYTE);
+	loadData((const void *)data, w, h, xOffset, yOffset, glFormat, GL_UNSIGNED_BYTE);
 }
-void ofxTexture2d::loadData(float * data, int w, int h, int xOffset, int yOffset, int glFormat)
+void ofxTexture2d::loadData(const float * data, int w, int h, int xOffset, int yOffset, int glFormat)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, w, 4, ofGetNumChannelsFromGLFormat(glFormat));
-	loadData((void *)data, w, h, xOffset, yOffset, glFormat, GL_FLOAT);
+	loadData((const void *)data, w, h, xOffset, yOffset, glFormat, GL_FLOAT);
 }
-void ofxTexture2d::loadData(unsigned short* data, int w, int h, int xOffset, int yOffset, int glFormat)
+void ofxTexture2d::loadData(const unsigned short* data, int w, int h, int xOffset, int yOffset, int glFormat)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, w, 2, ofGetNumChannelsFromGLFormat(glFormat));
-	loadData((void *)data, w, h, xOffset, yOffset, glFormat, GL_UNSIGNED_SHORT);
+	loadData((const void *)data, w, h, xOffset, yOffset, glFormat, GL_UNSIGNED_SHORT);
 }
-void ofxTexture2d::loadData(ofPixels & pix, int xOffset, int yOffset)
+void ofxTexture2d::loadData(const ofPixels & pix, int xOffset, int yOffset)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, pix.getWidth(), pix.getBytesPerChannel(), pix.getNumChannels());
 	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGlFormat(pix), ofGetGlType(pix));
 }
-void ofxTexture2d::loadData(ofShortPixels & pix, int xOffset, int yOffset)
+void ofxTexture2d::loadData(const ofShortPixels & pix, int xOffset, int yOffset)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, pix.getWidth(), pix.getBytesPerChannel(), pix.getNumChannels());
 	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGlFormat(pix), ofGetGlType(pix));
 }
-void ofxTexture2d::loadData(ofFloatPixels & pix, int xOffset, int yOffset)
+void ofxTexture2d::loadData(const ofFloatPixels & pix, int xOffset, int yOffset)
 {
 	ofSetPixelStoreiAlignment(GL_UNPACK_ALIGNMENT, pix.getWidth(), pix.getBytesPerChannel(), pix.getNumChannels());
 	loadData(pix.getData(), pix.getWidth(), pix.getHeight(), xOffset, yOffset, ofGetGlFormat(pix), ofGetGlType(pix));
 }
 
-void ofxTexture2d::loadData(void * data, int w, int h, int xOffset, int yOffset, int glFormat, int glType)
+void ofxTexture2d::loadData(const void * data, int w, int h, int xOffset, int yOffset, int glFormat, int glType)
 {
 	if (glFormat != texData.glInternalFormat)
 	{
@@ -50,7 +50,7 @@ void ofxTexture2d::loadData(void * data, int w, int h, int xOffset, int yOffset,
 
 	glBindTexture(texData.textureTarget, (GLuint)texData.textureID);
 
-	glTexSubImage2D(texData.textureTarget, 0, xOffset, yOffset, w, h, glFormat, glType, data);
+	//glTexSubImage2D(texData.textureTarget, 0, xOffset, yOffset, w, h, glFormat, glType, data);
 
 	glDisable(texData.textureTarget);
 }

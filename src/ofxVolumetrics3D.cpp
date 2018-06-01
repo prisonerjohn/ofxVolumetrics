@@ -5,10 +5,7 @@
 //--------------------------------------------------------------
 ofxVolumetrics3D::ofxVolumetrics3D()
 	: ofxVolumetrics()
-{
-	// Have to call this in subclass.
-	setupShader();
-}
+{}
 
 //--------------------------------------------------------------
 void ofxVolumetrics3D::setupShader()
@@ -35,6 +32,12 @@ void ofxVolumetrics3D::setupShader()
 //--------------------------------------------------------------
 void ofxVolumetrics3D::setup(int w, int h, int d, const ofDefaultVec3 & voxelSize, bool usePowerOfTwoTexSize)
 {
+	clear();
+
+	volumeTexture = new ofxTexture3d();
+	volumeTexture->allocate(w, h, d, GL_RGBA);
+	bOwnsTexture = true;
+
 	volTexWidth = volWidth = renderWidth = w;
 	volTexHeight = volHeight = renderHeight = h;
 	volTexDepth = volDepth = d;
@@ -45,22 +48,11 @@ void ofxVolumetrics3D::setup(int w, int h, int d, const ofDefaultVec3 & voxelSiz
 		volTexHeight = ofNextPow2(volTexHeight);
 		volTexDepth = ofNextPow2(volTexDepth);
 
-		ofLogVerbose("ofxVolumetrics3D::setup") << "Using power of two texture size. Requested: " << w << "x" << h << "x" << d << ". Actual: " << volTexWidth << "x" << volTexHeight << "x" << volTexDepth;
-	}
+		ofLogVerbose(__FUNCTION__) << "Using power of two texture size. Requested: " << w << "x" << h << "x" << d << ". Actual: " << volTexWidth << "x" << volTexHeight << "x" << volTexDepth;
 
-	if (bOwnsTexture && volumeTexture)
-	{
-		delete volumeTexture;
-	}
-
-	volumeTexture = new ofxTexture3d();
-	volumeTexture->allocate(w, h, d, GL_RGBA);
-	bOwnsTexture = true;
-
-	if (bIsPowerOfTwo)
-	{
 		// If using cropped power of two, blank out the extra memory.
-		auto d = new unsigned char[volTexWidth*volTexHeight*volTexDepth * 4];
+		unsigned char * d;
+		d = new unsigned char[volTexWidth*volTexHeight*volTexDepth * 4];
 		memset(d, 0, volTexWidth*volTexHeight*volTexDepth * 4);
 		volumeTexture->loadData(d, volTexWidth, volTexHeight, volTexDepth, 0, 0, 0, GL_RGBA);
 
@@ -69,38 +61,13 @@ void ofxVolumetrics3D::setup(int w, int h, int d, const ofDefaultVec3 & voxelSiz
 	}
 
 	voxelRatio = voxelSize;
-	fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
-	bIsInitialized = true;
-}
-
-//--------------------------------------------------------------
-void ofxVolumetrics3D::setup(ofxTexture3d * texture, const ofDefaultVec3 & voxelSize)
-{
-	if (bOwnsTexture && volumeTexture)
-	{
-		delete volumeTexture;
-	}
-
-	volumeTexture = texture;
-	bOwnsTexture = false;
-
-	volTexWidth = volWidth = renderWidth = volumeTexture->texData.width;
-	volTexHeight = volHeight = renderHeight = volumeTexture->texData.height;
-	volTexDepth = volDepth = volumeTexture->texData.depth;
-
-	voxelRatio = voxelSize;
 
 	if (fboRender.getWidth() != volTexWidth || fboRender.getHeight() != volTexHeight)
 	{
 		fboRender.allocate(volTexWidth, volTexHeight, GL_RGBA);
 	}
+
+	setupShader();
+
 	bIsInitialized = true;
-}
-
-//--------------------------------------------------------------
-void ofxVolumetrics3D::updateShaderUniforms(int zOffset)
-{
-	ofxVolumetrics::updateShaderUniforms(zOffset);
-
-	volumeShader.setUniformTexture("volume_tex", volumeTexture->texData.textureTarget, volumeTexture->texData.textureID, 1);
 }

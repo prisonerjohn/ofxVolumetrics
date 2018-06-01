@@ -1,11 +1,13 @@
 STRINGIFY(
 \n#version 150\n
 
+uniform vec4 globalColor;
+
 in vec4 vPosition;
 in vec3 vTexCoord;
 in vec3 vCameraPosition;
 
-out vec4 vFragColor;
+out vec4 fragColor;
 
 uniform sampler2DArray volume_tex;
 uniform vec3 vol_d;
@@ -99,8 +101,8 @@ void main()
         }
     }
     // export the rendered color
-    vFragColor = col_acc;
-    //vFragColor = texture(volume_tex, vTexCoord);
-    //vFragColor = vec4(vTexCoord.xy, vTexCoord.z / vol_tex_d.z, 1.0);
+    fragColor = col_acc * globalColor;
+    //fragColor = texture(volume_tex, vTexCoord);
+    //fragColor = vec4(vTexCoord.xy, vTexCoord.z / vol_tex_d.z, 1.0);
 }
 );

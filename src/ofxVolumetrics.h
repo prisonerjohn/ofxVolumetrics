@@ -17,29 +17,34 @@ public:
 
 	virtual void setup(int w, int h, int d, const ofDefaultVec3 & voxelSize, bool usePowerOfTwoTexSize = false) = 0;
 	void setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize);
+	void setup(ofxTexture * texture, const ofDefaultVec3 & voxelSize, ofShader shader);
 
 	void clear();
 
-	virtual void updateVolumeData(unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
-	
+	virtual void updateTexture(ofxTexture * texture, const ofDefaultVec3 & voxelSize);
+	ofxTexture * getTexture() const;
+
+	virtual void updateVolumeData(const unsigned char * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
+	virtual void updateVolumeData(const float * data, int w, int h, int d, int xOffset, int yOffset, int zOffset);
+
 	void drawVolume(float x, float y, float z, float size, int zTexOffset);
 	void drawVolume(float x, float y, float z, float w, float h, float d, int zTexOffset);
-	
+
 	bool isInitialized();
-	
+
 	int getVolumeWidth();
 	int getVolumeHeight();
 	int getVolumeDepth();
-	
+
 	ofFbo & getFboReference();
 	int getRenderWidth();
 	int getRenderHeight();
-	
+
 	float getXyQuality();
 	float getZQuality();
 	float getThreshold();
 	float getDensity();
-	
+
 	void setXyQuality(float q);
 	void setZQuality(float q);
 	void setThreshold(float t);

@@ -11,7 +11,8 @@
 #include "ofxVolumetricsArray.h"
 #endif
 
-class ofApp : public ofBaseApp
+class ofApp 
+	: public ofBaseApp
 {
 public:
 	void setup();
