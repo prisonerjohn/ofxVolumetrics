@@ -50,7 +50,6 @@ void ofxTexture3d::allocate(int w, int h, int d, int internalGlDataType)
 
 	// Initialize the new texture.
 	glGenTextures(1, (GLuint *)&texData.textureID);
-	ofRetain();
 
 	bind();
 	auto glFormat = ofGetGLFormatFromInternal(texData.glInternalFormat);

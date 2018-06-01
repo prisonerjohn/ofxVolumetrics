@@ -75,9 +75,6 @@ public:
 
 protected:
 	virtual void loadData(const void * data, int w, int h, int d, int xOffset, int yOffset, int zOffset, int glFormat) = 0;
-
-	void ofRetain();
-	void ofRelease();
 };
 
 namespace std

@@ -8,6 +8,9 @@ class ofxTextureArray
 public:
 	ofxTextureArray();
 
+	ofxTextureArray(ofxTextureArray && mom);
+	ofxTextureArray & operator=(ofxTextureArray && mom);
+
 	void allocate(int w, int h, int d, int internalGlDataType) override;
 
 	using ofxTexture::loadData;

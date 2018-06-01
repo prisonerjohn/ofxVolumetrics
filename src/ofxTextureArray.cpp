@@ -8,6 +8,20 @@ ofxTextureArray::ofxTextureArray()
 }
 
 //----------------------------------------------------------
+ofxTextureArray::ofxTextureArray(ofxTextureArray && mom)
+	:ofxTexture(std::move(mom))
+{}
+
+//----------------------------------------------------------
+ofxTextureArray & ofxTextureArray::operator=(ofxTextureArray && mom)
+{
+	texData = std::move(mom.texData);
+	mom.texData.bAllocated = false;
+	mom.texData.textureID = 0;
+	return *this;
+}
+
+//----------------------------------------------------------
 void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 {
 	if (ofGetLogLevel() >= OF_LOG_VERBOSE)
@@ -36,7 +50,6 @@ void ofxTextureArray::allocate(int w, int h, int d, int internalGlDataType)
 
 	// Initialize the new texture.
 	glGenTextures(1, (GLuint *)&texData.textureID);
-	ofRetain();
 
 	bind();
 	glTexStorage3D(texData.textureTarget, 1, texData.glInternalFormat, (GLint)texData.tex_w, (GLint)texData.tex_h, (GLint)texData.tex_d);
